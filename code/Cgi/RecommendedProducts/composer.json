@@ -1,0 +1,17 @@
+{
+    "name": "cgi/module-recommendedproducts",
+    "description": "",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Cgi\\RecommendedProducts\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    },
+    "version": "1.0.0"
+}
