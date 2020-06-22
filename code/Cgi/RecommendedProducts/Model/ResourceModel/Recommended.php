@@ -10,6 +10,7 @@
 
 namespace Cgi\RecommendedProducts\Model\ResourceModel;
 
+use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 /**
@@ -19,11 +20,16 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 class Recommended extends AbstractDb
 {
     /**
+     * Table Name
+     */
+    public const TABLE_NAME = 'recommended_products';
+
+    /**
      * Initialize resource
      * @return void
      */
     public function _construct()
     {
-        $this->_init('recommended_products', 'entity_id');
+        $this->_init(self::TABLE_NAME, RecommendedInterface::ENTITY_ID);
     }
 }

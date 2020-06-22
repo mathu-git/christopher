@@ -7,6 +7,7 @@
  * @copyright 2020 CGI
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Cgi\RecommendedProducts\Service\Logger;
 
 use Magento\Framework\Logger\Handler\Base;

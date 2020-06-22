@@ -17,6 +17,7 @@
                 <argument name="id" xsi:type="string">recommended</argument>
                 <argument name="use_ajax" xsi:type="string">true</argument>
                 <argument name="default_sort" xsi:type="string">added_at</argument>
+                <argument name="filter" xsi:type="string">0</argument>
                 <argument name="grid_url" xsi:type="url" path="*/*/recommended">
                     <param name="_current">1</param>
                 </argument>
@@ -39,6 +40,7 @@
                         <argument name="header" xsi:type="string" translate="true">Entity Id</argument>
                         <argument name="id" xsi:type="string">entity_id</argument>
                         <argument name="index" xsi:type="string">entity_id</argument>
+                        <argument name="filter" xsi:type="string">0</argument>
                         <argument name="column_css_class" xsi:type="string">col-name</argument>
                         <argument name="header_css_class" xsi:type="string">col-name</argument>
                     </arguments>
@@ -48,6 +50,7 @@
                         <argument name="header" xsi:type="string" translate="true">Product Id</argument>
                         <argument name="id" xsi:type="string">product_id</argument>
                         <argument name="index" xsi:type="string">product_id</argument>
+                        <argument name="filter" xsi:type="string">0</argument>
                         <argument name="column_css_class" xsi:type="string">col-name</argument>
                         <argument name="header_css_class" xsi:type="string">col-name</argument>
                     </arguments>
@@ -57,6 +60,7 @@
                         <argument name="header" xsi:type="string" translate="true">Product Name</argument>
                         <argument name="id" xsi:type="string">product_name</argument>
                         <argument name="index" xsi:type="string">product_name</argument>
+                        <argument name="filter" xsi:type="string">0</argument>
                         <argument name="column_css_class" xsi:type="string">col-name</argument>
                         <argument name="header_css_class" xsi:type="string">col-name</argument>
                     </arguments>
@@ -66,6 +70,7 @@
                         <argument name="header" xsi:type="string" translate="true">Sku</argument>
                         <argument name="id" xsi:type="string">product_sku</argument>
                         <argument name="index" xsi:type="string">product_sku</argument>
+                        <argument name="filter" xsi:type="string">0</argument>
                         <argument name="column_css_class" xsi:type="string">col-name</argument>
                         <argument name="header_css_class" xsi:type="string">col-name</argument>
                     </arguments>
@@ -75,6 +80,7 @@
                         <argument name="header" xsi:type="string" translate="true">Customer Id</argument>
                         <argument name="id" xsi:type="string">customer_id</argument>
                         <argument name="index" xsi:type="string">customer_id</argument>
+                        <argument name="filter" xsi:type="string">0</argument>
                         <argument name="column_css_class" xsi:type="string">col-name</argument>
                         <argument name="header_css_class" xsi:type="string">col-name</argument>
                     </arguments>
@@ -85,6 +91,7 @@
                         <argument name="header" xsi:type="string" translate="true">priority</argument>
                         <argument name="id" xsi:type="string">priority</argument>
                         <argument name="index" xsi:type="string">priority</argument>
+                        <argument name="filter" xsi:type="string">0</argument>
                         <argument name="column_css_class" xsi:type="string">col-name</argument>
                         <argument name="header_css_class" xsi:type="string">col-name</argument>
                     </arguments>

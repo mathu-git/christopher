@@ -1,23 +1,23 @@
 <?php
 /**
- * *
- *  * Copyright © 2020 CGI. All rights reserved.
- *  * See COPYING.txt for license details.
- *  *
- *  * @author    CGI <info.de@cgi.com>
- *  * @copyright 2020 CGI
- *  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2020 CGI. All rights reserved.
+ * See COPYING.txt for license details.
  *
+ * @author    CGI <info.de@cgi.com>
+ * @copyright 2020 CGI
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 namespace Cgi\RecommendedProducts\Block\Widget;
 
+use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
+use Cgi\RecommendedProducts\Model\ResourceModel\Recommended;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Customer\Model\Session;
+use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\Url\Helper\Data;
 use Magento\Widget\Block\BlockInterface;
@@ -80,7 +80,7 @@ class Slider extends ListProduct implements BlockInterface
      */
     public function getProductCollection()
     {
-        $customer = $this->customerSession;
+        $customer = $this->getCustomerLoggedIn();
         $collection = [];
         /** Check the customer is Logged In */
         if ($customer->isLoggedIn()) {
@@ -89,11 +89,22 @@ class Slider extends ListProduct implements BlockInterface
             $collection = $this->collectionFactory->create();
             $collection = $collection->addAttributeToSelect('*');
             $collection->getSelect()->join(
-                ['u' => $collection->getTable('recommended_products')],
+                ['u' => $collection->getTable(Recommended::TABLE_NAME)],
                 $joinConditions,
                 []
-            )->where('u.customer_id = ?', $customerId)->order('priority', 'ASC')->order('updated_at', 'ASC');
+            )->where('u.customer_id = ?', $customerId)
+                ->order(RecommendedInterface::PRIORITY, SortOrder::SORT_ASC)
+                ->order(RecommendedInterface::UPDATED_AT, SortOrder::SORT_DESC)
+                ->limit('15');
         }
         return $collection;
+    }
+
+    /**
+     * @return Session
+     */
+    public function getCustomerLoggedIn()
+    {
+        return $this->customerSession;
     }
 }

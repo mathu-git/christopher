@@ -7,6 +7,7 @@
  * @copyright 2020 CGI
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Cgi\RecommendedProducts\Model\ResourceModel\Recommended\Collection;
 
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;

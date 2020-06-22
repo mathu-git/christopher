@@ -10,6 +10,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <css src="Cgi_RecommendedProducts::css/owl.carousel.css"/>
+        <css src="Cgi_RecommendedProducts::css/recommended_slider.css"/>
         <script src="Cgi_RecommendedProducts::js/jquery_slide.min.js" />
         <script src="Cgi_RecommendedProducts::js/owlCarousel.js" />
     </head>

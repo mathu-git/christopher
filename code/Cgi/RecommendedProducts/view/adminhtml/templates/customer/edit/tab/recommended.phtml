@@ -33,6 +33,7 @@
             },
 
             configureItem: function (itemId) {
+                location.reload();
                 productConfigure.setOnLoadIFrameCallback('wishlist', this.cbOnLoadIframe.bind(this));
                 productConfigure.showItemConfiguration('wishlist', itemId);
                 return false;

@@ -1,0 +1,21 @@
+/**
+ * Copyright © 2020 CGI. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * @author    CGI <info.de@cgi.com>
+ * @copyright 2020 CGI
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+.block.widget .products-grid .recommended-slider .product-item .product-item-inner {
+    box-shadow: none;
+    margin: 0;
+    position: static;
+    padding: 0;
+    border: 0 none;
+    background: none;
+}
+.products-grid .recommended-slider .product-item-info:hover {
+    box-shadow: none;
+    border: 0 none;
+}

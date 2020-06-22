@@ -19,39 +19,9 @@ use Magento\Framework\DataObject as DataObjectAlias;
 class Multiaction extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Action
 {
     /**
-     * Renders column
-     *
-     * @param DataObjectAlias $row
-     * @return string
-     */
-    public function render(DataObjectAlias $row)
-    {
-        $html = '';
-        $actions = $this->getColumn()->getActions();
-        if (!empty($actions) && is_array($actions)) {
-            $links = [];
-            foreach ($actions as $action) {
-                if (is_array($action)) {
-                    $link = $this->_toLinkHtml($action, $row);
-                    if ($link) {
-                        $links[] = $link;
-                    }
-                }
-            }
-            $html = implode('<br />', $links);
-        }
-
-        if ($html == '') {
-            $html = '&nbsp;';
-        }
-
-        return $html;
-    }
-
-    /**
      * Render single action as link html
      *
-     * @param  array $action
+     * @param array $action
      * @param DataObjectAlias $row
      * @return string|false
      */

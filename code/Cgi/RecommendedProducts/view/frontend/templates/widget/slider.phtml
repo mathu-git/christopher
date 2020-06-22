@@ -1,4 +1,4 @@
-<?php if($block->getData('recommended')): ?>
+<?php if($block->getData('recommended') && $block->getCustomerLoggedIn()->isLoggedIn()): ?>
     <h2 class='recommended'><?php echo $block->getData('recommended'); ?></h2>
 <?php endif; ?>
 
@@ -7,7 +7,8 @@ use Magento\Framework\App\Action\Action;
 $_productCollection = $block->getProductCollection();
 $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
 ?>
-<?php if (!$_productCollection) : ?>
+<?php if ($block->getCustomerLoggedIn()->isLoggedIn()) : ?>
+<?php if (count($_productCollection) == 0) : ?>
     <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
 <?php else :?>
 <?= $block->getToolbarHtml() ?>
@@ -126,6 +127,7 @@ $pos = $block->getPositioned();
             }
         }
         </script>
+<?php endif; ?>
 <?php endif; ?>
 <?php endif; ?>
 <script type="text/javascript" xml="space">

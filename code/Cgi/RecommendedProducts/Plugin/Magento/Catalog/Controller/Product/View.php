@@ -10,6 +10,7 @@
 
 namespace Cgi\RecommendedProducts\Plugin\Magento\Catalog\Controller\Product;
 
+use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterfaceFactory;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
@@ -132,8 +133,8 @@ class View
                 $productName = $productRepository->getName();
                 $productSku = $productRepository->getSku();
                 $searchCriteria = $this->searchCriteriaBuilder
-                    ->addFilter('product_id', $productId, 'eq')
-                    ->addFilter('customer_id', $customerId, 'eq')
+                    ->addFilter(RecommendedInterface::PRODUCT_ID, $productId, 'eq')
+                    ->addFilter(RecommendedInterface::CUSTOMER_ID, $customerId, 'eq')
                     ->create();
                 $viewProductList = $this->recommendedRepositoryInterface->getList($searchCriteria);
                 /** check the product exist in custom table */

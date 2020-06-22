@@ -14,7 +14,9 @@ use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Response\RedirectInterface;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 
 /**
@@ -59,9 +61,14 @@ class Delete extends \Magento\Backend\App\Action
         $this->resultFactory = $resultFactory;
         parent::__construct($context);
     }
+
+    /**
+     * @return $this|ResponseInterface|ResultInterface
+     */
     public function execute()
     {
         $customerId = $this->getRequest()->getParam('id');
+        /** Check Customer Id is Exist */
         if (isset($customerId)) {
             try {
                 $this->recommendedRepositoryInterface->deleteById($customerId);
@@ -69,6 +76,6 @@ class Delete extends \Magento\Backend\App\Action
                 $this->recommendedProductLogger->critical($e->getMessage());
             }
         }
-        return $this->_redirect(sprintf("customer/index/edit/id/%s", $customerId));
+        return $this;
     }
 }
