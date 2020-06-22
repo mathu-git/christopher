@@ -128,7 +128,7 @@ class View
             $customerId = $this->customerSession->getCustomerId();
             $date = $this->date->gmtDate();
             try {
-                $productId = (int)$subject->getRequest()->getParam('id');
+                $productId = (int)$subject->getRequest()->getParam(RecommendedInterface::ID);
                 $productRepository = $this->productRepository->getById($productId);
                 $productName = $productRepository->getName();
                 $productSku = $productRepository->getSku();

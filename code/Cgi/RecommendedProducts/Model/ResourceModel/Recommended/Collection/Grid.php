@@ -59,7 +59,7 @@ class Grid extends Collection
     protected function _initSelect()
     {
         parent::_initSelect();
-        $customerId = $this->request->getParam('id');
+        $customerId = $this->request->getParam(RecommendedInterface::ID);
         $this->addFieldToFilter(RecommendedInterface::CUSTOMER_ID, $customerId);
         $this->setOrder(RecommendedInterface::PRIORITY, SortOrder::SORT_ASC);
         $this->setOrder(RecommendedInterface::UPDATED_AT);

@@ -7,6 +7,7 @@
  * @copyright 2020 CGI
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Cgi\RecommendedProducts\Block\Widget;
 
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
@@ -32,6 +33,11 @@ class Slider extends ListProduct implements BlockInterface
      * Template File
      */
     protected $_template = "widget/slider.phtml";
+
+    /**
+     * Product Count
+     */
+    public const PRODUCT_COUNT = 15;
 
     /**
      * @var Session
@@ -95,7 +101,7 @@ class Slider extends ListProduct implements BlockInterface
             )->where('u.customer_id = ?', $customerId)
                 ->order(RecommendedInterface::PRIORITY, SortOrder::SORT_ASC)
                 ->order(RecommendedInterface::UPDATED_AT, SortOrder::SORT_DESC)
-                ->limit('15');
+                ->limit(self::PRODUCT_COUNT);
         }
         return $collection;
     }

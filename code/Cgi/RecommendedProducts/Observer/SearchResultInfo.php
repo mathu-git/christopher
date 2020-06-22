@@ -44,6 +44,11 @@ class SearchResultInfo implements ObserverInterface
     public const PRIORITY = '2';
 
     /**
+     * Product Name
+     */
+    public const NAME = 'name';
+
+    /**
      * @var RecommendedInterfaceFactory
      */
     private $recommendedInterfaceFactory;
@@ -159,7 +164,7 @@ class SearchResultInfo implements ObserverInterface
         if ($customer->isLoggedIn()) {
             $searchTerm = $this->queryFactory->get()->getQueryText();
             $searchCriteria = $this->searchCriteriaBuilder
-                ->addFilter('name', $searchTerm, 'eq')->create();
+                ->addFilter(self::NAME, $searchTerm, 'eq')->create();
             $product = $this->productRepository->getList($searchCriteria);
             $customerId = $customer->getCustomerId();
             $date = $this->date->gmtDate();

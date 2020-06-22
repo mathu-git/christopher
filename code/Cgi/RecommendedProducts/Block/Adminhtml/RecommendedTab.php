@@ -10,6 +10,7 @@
 
 namespace Cgi\RecommendedProducts\Block\Adminhtml;
 
+use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Phrase;
@@ -53,7 +54,7 @@ class RecommendedTab extends TabWrapper implements TabInterface
      */
     public function canShowTab()
     {
-        return $this->request->getParam('id');
+        return $this->request->getParam(RecommendedInterface::ID);
     }
 
     /**

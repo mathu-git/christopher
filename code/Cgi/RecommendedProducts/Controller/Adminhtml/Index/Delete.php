@@ -10,6 +10,7 @@
 
 namespace Cgi\RecommendedProducts\Controller\Adminhtml\Index;
 
+use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Magento\Backend\App\Action\Context;
@@ -67,7 +68,7 @@ class Delete extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $customerId = $this->getRequest()->getParam('id');
+        $customerId = $this->getRequest()->getParam(RecommendedInterface::ID);
         /** Check Customer Id is Exist */
         if (isset($customerId)) {
             try {
