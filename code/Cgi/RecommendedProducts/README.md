@@ -31,4 +31,4 @@ Recommended Product Slider module also allows placing the sliders in All Pages. 
 
 - Easy to install and setup
 - Insert to CMS Pages, CMS Static or Homepage
-- Support all browsers: Firefox, Chrome, IE, Safari Opera.
+- Support all browsers: Firefox, Chrome.

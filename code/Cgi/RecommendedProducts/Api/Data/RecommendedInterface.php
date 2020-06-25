@@ -59,7 +59,7 @@ interface RecommendedInterface
     /**
      * Updated Time
      */
-    public const UPDATED_AT = 'updated_at';
+    public const PRODUCT_UPDATED_AT = 'product_updated_at';
 
     /**
      * Priority
@@ -171,17 +171,17 @@ interface RecommendedInterface
     public function setCreatedAt($createdAt);
 
     /**
-     * Get updated_at
+     * Get product_updated_at
      * @return string
      */
-    public function getUpdatedAt();
+    public function getProductUpdatedAt();
 
     /**
-     * Set updated_at
-     * @param string $updatedAt
+     * Set product_updated_at
+     * @param string $productUpdatedAt
      * @return RecommendedInterface
      */
-    public function setUpdatedAt($updatedAt);
+    public function setProductUpdatedAt($productUpdatedAt);
 
     /**
      * Get priority

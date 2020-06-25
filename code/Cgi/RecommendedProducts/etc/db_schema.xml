@@ -14,7 +14,7 @@
 				comment="Priority"/>
 		<column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
 				comment="Registration Date"/>
-		<column xsi:type="timestamp" name="updated_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+		<column xsi:type="timestamp" name="product_updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
 				comment="Updated Date"/>
 		<constraint xsi:type="primary" referenceId="PRIMARY">
 			<column name="entity_id"/>

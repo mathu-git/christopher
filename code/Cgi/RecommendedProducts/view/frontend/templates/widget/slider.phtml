@@ -1,160 +1,99 @@
-<?php if($block->getData('recommended') && $block->getCustomerLoggedIn()->isLoggedIn()): ?>
-    <h2 class='recommended'><?php echo $block->getData('recommended'); ?></h2>
-<?php endif; ?>
-
-<?php
-use Magento\Framework\App\Action\Action;
-$_productCollection = $block->getProductCollection();
-$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
-?>
-<?php if ($block->getCustomerLoggedIn()->isLoggedIn()) : ?>
-<?php if (count($_productCollection) == 0) : ?>
-    <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
-<?php else :?>
-<?= $block->getToolbarHtml() ?>
-<?= $block->getAdditionalHtml() ?>
-<?php
-if ($block->getMode() == 'grid') {
-    $viewMode = 'grid';
-    $imageDisplayArea = 'category_page_grid';
-    $showDescription = false;
-    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
-} else {
-    $viewMode = 'list';
-    $imageDisplayArea = 'category_page_list';
-    $showDescription = true;
-    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
-}
-/**
- * Position for actions regarding image size changing in vde if needed
- */
-$pos = $block->getPositioned();
-?>
-<div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
-    <ol class="owl-carousel owl-theme recommended-slider products list items product-items">
-        <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
-        <?php foreach ($_productCollection->getItems() as $_product) :?>
-        <li class="item product product-item" style="width: 100%">
-            <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
-                <?php
-                $productImage = $block->getImage($_product, $imageDisplayArea);
-                if ($pos != null) {
-                    $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                        . 'top:' . $productImage->getHeight() . 'px;"';
-                }
-                ?>
-                <?php // Product Image ?>
-                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                   class="product photo product-item-photo"
-                   tabindex="-1">
-                    <?= $productImage->toHtml() ?>
-                </a>
-                <div class="product details product-item-details">
-                    <?php
-                    $_productNameStripped = $block->stripTags($_product->getName(), null, true);
-                    ?>
-                    <strong class="product name product-item-name">
-                        <a class="product-item-link"
-                           href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
-                            <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
-                        </a>
-                    </strong>
-                    <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
-                    <?= /* @noEscape */ $block->getProductPrice($_product) ?>
-                    <?= $block->getProductDetailsHtml($_product) ?>
-
-                    <div class="product-item-inner">
-                        <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
-                            <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                <?php if ($_product->isSaleable()) :?>
-
-                                    <?php $postParams = $block->getAddToCartPostParams($_product); ?>
-                                    <form data-role="tocart-form"
-                                          data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
-                                          action="<?= $block->escapeUrl($postParams['action']) ?>"
-                                          method="post">
-                                        <input type="hidden"
-                                               name="product"
-                                               value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
-                                        <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
-                                               value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
-                                        <?php //echo $_product->getSku();exit(); ?>
-                                        <?= $block->getBlockHtml('formkey') ?>
-
-                                        <button type="submit"
-                                                title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                                class="action tocart primary">
-                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
-                                        </button>
-                                    </form>
-                                <?php else :?>
-                                    <?php if ($_product->isAvailable()) :?>
-                                        <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
-                                    <?php else :?>
-                                        <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                            </div>
-                            <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
-                                <?php if ($addToBlock = $block->getChildBlock('addto')) :?>
-                                    <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <?php if ($showDescription) :?>
-                            <div class="product description product-item-description">
-                                <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
-                                   title="<?= /* @noEscape */ $_productNameStripped ?>"
-                                   class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+<?php $baseUrl = $block->getBaseUrl(); ?>
+<?php $_productCollection = $block->getProductCollection(); ?>
+<?php if ($block->getData('recommended') && $block->getCustomerLoggedIn()->isLoggedIn()): ?>
+<div class="block widget block-new-products grid bestsale">
+    <div class="products-display ">
+        <div class="sub_product_display">
+            <div class="products-show">
+                <div class="block-title">
+                    <h2 role="heading" aria-level="2"><?= $block->getData('recommended'); ?></h2>
+                    <?php if (count($_productCollection) == 0) :?>
+                    <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
+                    <?php endif; ?>
                 </div>
             </div>
-        </li>
-        <?php endforeach; ?>
-    </ol>
+            <div id="content-loader" class="slider">
+            </div>
+            <div id="ajax_loading" class="ajax_loading" style="display: none">
+            </div>
+            <input type="hidden" value="<?php echo $baseUrl . 'recommended/slider/products'; ?>" id="baseUrl"/>
+        </div>
+    </div>
+
 </div>
-<?= $block->getToolbarHtml() ?>
-<?php if (!$block->isRedirectToCartEnabled()) :?>
-    <script type="text/x-magento-init">
-        {
-            "[data-role=tocart-form], .form.map.checkout": {
-                "catalogAddToCart": {
-                    "product_sku": "<?= $block->escapeJs($_product->getSku()) ?>"
+<?php endif; ?>
+
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui', 'owlCarousel'], function ($, owlCarousel) {
+        jQuery(document).ready(function (jQuery) {
+            var url = "<?php echo $baseUrl . 'recommended/slider/products'; ?>";
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {sucess: 'success'},
+                showLoader: true,
+                cache: false,
+                success: function (response) {
+                    htmlObject = jQuery('#content-loader').html(response);
+                    htmlObject.find('[data-role=tocart-form], .form.map.checkout').attr('data-mage-init', JSON.stringify({'catalogAddToCart': {}}));
+                    htmlObject.trigger('contentUpdated');
+                    var owl = jQuery('.owlslider');
+                    owl.owlCarousel({
+                        items: 4,
+                        loop: false,
+                        margin: 10,
+                        autoplay: true,
+                        showLoader: true,
+                        autoplayHoverPause: true,
+                        autoplaySpeed: 500,
+                        slideBy: 1,
+                        responsiveClass: true,
+                        nav: true,
+                        responsive: {
+                            0: {
+                                items: 1
+                            },
+                            600: {
+                                items: 3
+                            },
+                            1000: {
+                                items: 5
+                            }
+                        }
+                    });
                 }
-            }
-        }
-        </script>
-<?php endif; ?>
-<?php endif; ?>
-<?php endif; ?>
-<script type="text/javascript" xml="space">
-    require([
-        'jquery',
-        'owlCarousel'
-    ], function($, owlCarousel){
-        $(document).ready(function() {
-            $('.owl-carousel').owlCarousel({
-                loop:false,
-                margin:10,
-                autoplay:false,
-                autoplayTimeout:1000,
-                autoplayHoverPause:false,
-                nav:true,
-                responsive:{
-                    0:{
-                        items:1
-                    },
-                    600:{
-                        items:3
-                    },
-                    1000:{
-                        items:5
-                    }
-                }
-            })
+            });
         });
     });
 </script>
+
+
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui'], function ($) {
+        jQuery(document).on("click", ".action.tocart.primary", function () {
+            var product_id = jQuery(this).parent('form').find('.product-id').val();
+            var customurl = "<?php echo $this->getUrl() . 'recommended/slider/addtocart' ?>";
+            if (product_id) {
+                $.ajax({
+                    url: customurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        product_id: product_id,
+                    },
+                    success: function (response) {
+                        if (response != null) {
+                            if (response.output) {
+                                console.log(response.output);
+                            }
+                        }
+                    },
+                    error: function (xhr, status, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+            }
+        });
+    });
+</script>
+

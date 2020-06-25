@@ -172,22 +172,22 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
     }
 
     /**
-     * Get updated_at
+     * Get product_updated_at
      * @return string
      */
-    public function getUpdatedAt()
+    public function getProductUpdatedAt()
     {
-        return $this->_get(self::CREATED_AT);
+        return $this->_get(self::PRODUCT_UPDATED_AT);
     }
 
     /**
-     * Set updated_at
-     * @param string $updatedAt
+     * Set product_updated_at
+     * @param string $productUpdatedAt
      * @return RecommendedInterface
      */
-    public function setUpdatedAt($updatedAt)
+    public function setProductUpdatedAt($productUpdatedAt)
     {
-        return $this->setData(self::UPDATED_AT, $updatedAt);
+        return $this->setData(self::PRODUCT_UPDATED_AT, $productUpdatedAt);
     }
 
     /**

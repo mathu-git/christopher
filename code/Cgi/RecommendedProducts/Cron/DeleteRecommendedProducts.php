@@ -67,7 +67,7 @@ class DeleteRecommendedProducts
             $condition = strtotime('-30 day', strtotime($currentData));
             $expiredDate = date('Y-m-d h:i:s', $condition);
             $expiredProduct = $this->collectionFactory->create()
-                ->addFieldToFilter(RecommendedInterface::UPDATED_AT, ['lt' => $expiredDate]);
+                ->addFieldToFilter(RecommendedInterface::PRODUCT_UPDATED_AT, ['lt' => $expiredDate]);
             if ($expiredProduct) {
                 $expiredProduct->walk('delete');
                 $message = __("Expired Products Deleted Successfully.");

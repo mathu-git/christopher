@@ -88,9 +88,9 @@ class SaveResult
                 $recommended->setPriority($priority)
                     ->setType($type)
                     ->setCustomerId($cId)
-                    ->setUpdatedAt($date);
+                    ->setProductUpdatedAt($date);
             } elseif ($productExistItem->getCustomerId() == $cId) {
-                $recommended->setUpdatedAt($date);
+                $recommended->setProductUpdatedAt($date);
             }
             return $this->recommendedRepositoryInterface->save($recommended);
         }

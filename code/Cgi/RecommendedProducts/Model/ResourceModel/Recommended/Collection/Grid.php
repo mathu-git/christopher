@@ -62,6 +62,6 @@ class Grid extends Collection
         $customerId = $this->request->getParam(RecommendedInterface::ID);
         $this->addFieldToFilter(RecommendedInterface::CUSTOMER_ID, $customerId);
         $this->setOrder(RecommendedInterface::PRIORITY, SortOrder::SORT_ASC);
-        $this->setOrder(RecommendedInterface::UPDATED_AT);
+        $this->setOrder(RecommendedInterface::PRODUCT_UPDATED_AT);
     }
 }

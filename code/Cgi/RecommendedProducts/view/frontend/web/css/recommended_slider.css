@@ -7,7 +7,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-.block.widget .products-grid .recommended-slider .product-item .product-item-inner {
+.block.widget .products-grid .cgi-bestsaletabs .product-item .product-item-inner {
     box-shadow: none;
     margin: 0;
     position: static;
@@ -15,7 +15,94 @@
     border: 0 none;
     background: none;
 }
-.products-grid .recommended-slider .product-item-info:hover {
+.products-grid .cgi-bestsaletabs .product-item-info:hover {
     box-shadow: none;
     border: 0 none;
 }
+
+.price-review {
+    min-height: 75px;
+}
+.cgi-bestsaletabs .product-item .price-box {
+    margin: 10px 0 10px;
+}
+.cgi-bestsaletabs a.action.primary {
+    border-radius: 0px;
+}
+
+.add-cart{
+    margin-top: 10px;
+}
+.product-item-info {
+    width: 100%;
+}
+.product_count{
+    display: none;
+}
+
+.lessproduct .grid.products-grid .item {
+    width: 222px;
+    margin-right: 10px;
+}
+.tabcontent .item.product.product-item{
+    width: 230px;
+}
+.owl-stage-outer {
+    display: block;
+    overflow: hidden;
+}
+.products-show {
+    background: #fff;
+    display: block;
+    overflow: hidden;
+    margin: 40px 0px 0px;
+}
+.owl-item {
+    display: inline-block;
+}
+
+.sub_product_display {
+    position: relative;
+}
+
+
+.content-products .cgi-bestsaletabs {
+    display: none;
+}
+.content-products .cgi-bestsaletabs.activated {
+    display: block;
+}
+.breadcrumbs li.item.Home {
+    background-image: none;
+}
+li#all {
+    list-style: none;
+    float: left;
+    display: block;
+    cursor: pointer;
+    margin-top: -3px;
+    font-size: 16px;
+}
+.page-wrapper .cgi-bestsaletabs .products.wrapper.grid.products-grid .item.product.product-item {
+    width: 100%;
+    padding: 0 10px;
+}
+.block.widget.block-new-products.grid.bestsale .owlslider.owl-loaded.owl-drag{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.owl-item.active {
+    margin-right: 0px !important;
+}
+.grid.bestsale .products.wrapper.grid.products-grid {
+    padding-top: 0;
+    margin: 0;
+}
+.products-show .block-title {
+    float: left;
+    margin: 12px 20px 0px;
+}
+
+
+
+
