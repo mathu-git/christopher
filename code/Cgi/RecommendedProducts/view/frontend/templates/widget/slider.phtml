@@ -7,9 +7,6 @@
             <div class="products-show">
                 <div class="block-title">
                     <h2 role="heading" aria-level="2"><?= $block->getData('recommended'); ?></h2>
-                    <?php if (count($_productCollection) == 0) :?>
-                    <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
-                    <?php endif; ?>
                 </div>
             </div>
             <div id="content-loader" class="slider">
@@ -19,7 +16,6 @@
             <input type="hidden" value="<?php echo $baseUrl . 'recommended/slider/products'; ?>" id="baseUrl"/>
         </div>
     </div>
-
 </div>
 <?php endif; ?>
 

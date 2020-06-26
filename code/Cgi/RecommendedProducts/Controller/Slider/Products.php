@@ -94,7 +94,7 @@ class Products extends Action
             endif;
             $html = '';
             $html .= '<div class="cgi-bestsaletabs mc- ' . $class . '">';
-            if (!$collection) :
+            if (empty($collection->getData())) :
                 $html .= '<div class="message info empty">';
                 $html .= "<div><span>We can't find products matching the selection.</span>";
                 $html .= '</div></div>'; else:
