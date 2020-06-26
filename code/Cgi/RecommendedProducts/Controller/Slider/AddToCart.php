@@ -11,6 +11,7 @@
 namespace Cgi\RecommendedProducts\Controller\Slider;
 
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -54,25 +55,33 @@ class AddToCart extends Action
     protected $product;
 
     /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
      * AddToCart constructor.
      *
-     * @param Context          $context
-     * @param UrlInterface     $urlInterface
-     * @param FormKey          $formKey
-     * @param Cart             $cart
+     * @param Context $context
+     * @param UrlInterface $urlInterface
+     * @param FormKey $formKey
+     * @param ProductRepository $productRepository
+     * @param Cart $cart
      * @param ManagerInterface $messageManager
-     * @param Product          $product
+     * @param Product $product
      */
     public function __construct(
         Context $context,
         UrlInterface $urlInterface,
         FormKey $formKey,
+        ProductRepository $productRepository,
         Cart $cart,
         ManagerInterface $messageManager,
         Product $product
     ) {
         $this->_urlInterface = $urlInterface;
         $this->formKey = $formKey;
+        $this->productRepository = $productRepository;
         $this->cart = $cart;
         $this->_messageManager = $messageManager;
         $this->product = $product;
@@ -91,12 +100,12 @@ class AddToCart extends Action
             'product' => $productId, //product Id
             'qty' => 1 //quantity of product
         ];
-        $_product = $this->product->load($productId);
+        $_product = $this->productRepository->getById($productId);
         $url = $this->_urlInterface->getUrl('checkout/cart', ['_secure' => true]);
         try {
             $this->cart->addProduct($_product, $params);
             $this->cart->save();
-            $message = __('You added ' . $_product->getName() . 'to your <a href="' . $url . '">shopping cart.</a>');
+            $message = __("You added %1 to your shopping cart.", $_product->getName());
             $this->messageManager->addSuccess($message);
         } catch (\Exception $e) {
             $message = __("We don't have as many %1 as you requested.", $_product->getName());

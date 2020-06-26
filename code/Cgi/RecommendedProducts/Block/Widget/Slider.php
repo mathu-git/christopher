@@ -17,6 +17,7 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Checkout\Model\Cart;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\Form\FormKey;
@@ -60,17 +61,23 @@ class Slider extends ListProduct implements BlockInterface
     protected $formKey;
 
     /**
+     * @var Cart
+     */
+    protected $cart;
+
+    /**
      * Slider constructor.
      *
-     * @param Session                     $customerSession
-     * @param CollectionFactory           $collectionFactory
-     * @param Context                     $context
-     * @param PostHelper                  $postDataHelper
-     * @param Resolver                    $layerResolver
-     * @param FormKey                     $formKey
+     * @param Session $customerSession
+     * @param CollectionFactory $collectionFactory
+     * @param Context $context
+     * @param PostHelper $postDataHelper
+     * @param Resolver $layerResolver
+     * @param FormKey $formKey
+     * @param Cart $cart
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param Data                        $urlHelper
-     * @param array                       $data
+     * @param Data $urlHelper
+     * @param array $data
      */
     public function __construct(
         Session $customerSession,
@@ -79,12 +86,14 @@ class Slider extends ListProduct implements BlockInterface
         PostHelper $postDataHelper,
         Resolver $layerResolver,
         FormKey $formKey,
+        Cart $cart,
         CategoryRepositoryInterface $categoryRepository,
         Data $urlHelper,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
         $this->formKey = $formKey;
+        $this->cart = $cart;
         $this->collectionFactory = $collectionFactory;
         parent::__construct(
             $context,
@@ -102,14 +111,19 @@ class Slider extends ListProduct implements BlockInterface
     {
         $customer = $this->getCustomerLoggedIn();
         $collection = [];
-        /**
-         * Check the customer is Logged In
-        */
         if ($customer->isLoggedIn()) {
             $customerId = $customer->getCustomerId();
+            $cartInfo = $this->cart->getQuote()->getAllItems();
+            $productIds= [];
+            foreach ($cartInfo as $product) {
+                $productIds[] = $product->getProductId();
+            }
             $joinConditions = 'u.product_id = e.entity_id';
             $collection = $this->collectionFactory->create();
             $collection = $collection->addAttributeToSelect('*');
+            if ($productIds) {
+                $collection->addAttributeToFilter('entity_id', array('nin' => $productIds));
+            }
             $collection->getSelect()->join(
                 ['u' => $collection->getTable(Recommended::TABLE_NAME)],
                 $joinConditions,
@@ -119,6 +133,9 @@ class Slider extends ListProduct implements BlockInterface
                 ->order('u.product_updated_at desc')
                 ->limit(self::PRODUCT_COUNT);
         }
+        /**
+         * Check the customer is Logged In
+        */
         return $collection;
     }
 
