@@ -69,7 +69,9 @@ class Products extends Action
      */
     public function execute()
     {
-        return $this->products($this->slider->getProductCollection());
+        if ($this->slider->getCustomerLoggedIn()->isLoggedIn()) {
+            return $this->products($this->slider->getProductCollection());
+        }
     }
 
     /**
