@@ -29,6 +29,7 @@ use Magento\Search\Model\QueryFactory;
 
 /**
  * Class SearchResultInfo
+ *
  * @package Cgi\RecommendedProducts\Observer
  */
 class SearchResultInfo implements ObserverInterface
@@ -51,77 +52,78 @@ class SearchResultInfo implements ObserverInterface
     /**
      * @var RecommendedInterfaceFactory
      */
-    private $recommendedInterfaceFactory;
+    protected $recommendedInterfaceFactory;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    private $recommendedRepositoryInterface;
+    protected $recommendedRepositoryInterface;
 
     /**
      * @var DateTime
      */
-    private $date;
+    protected $date;
 
     /**
      * @var CustomerSession
      */
-    private $customerSession;
+    protected $customerSession;
 
     /**
      * @var Viewed
      */
-    private $recentlyViewed;
+    protected $recentlyViewed;
 
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    protected $productRepository;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    private $searchCriteriaBuilder;
+    protected $searchCriteriaBuilder;
 
     /**
      * @var QueryFactory
      */
-    private $queryFactory;
+    protected $queryFactory;
 
     /**
      * @var SessionFactory
      */
-    private $customerSessionFactory;
+    protected $customerSessionFactory;
 
     /**
      * @var SaveResult
      */
-    private $saveResult;
+    protected $saveResult;
 
     /**
      * @var RecommendedProductLogger
      */
-    private $recommendedProductLogger;
+    protected $recommendedProductLogger;
 
     /**
      * @var FilterBuilder
      */
-    private $filterBuilder;
+    protected $filterBuilder;
 
     /**
      * SaveRecommendedInfo constructor.
-     * @param RecommendedInterfaceFactory $recommendedInterfaceFactory Recommended Interface Factory
+     *
+     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory    Recommended Interface Factory
      * @param RecommendedRepositoryInterface $recommendedRepositoryInterface Recommended Repository Interface
-     * @param Session $customerSession
-     * @param SessionFactory $sessionFactory
-     * @param FilterBuilder $filterBuilder
-     * @param RecommendedProductLogger $recommendedProductLogger
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param ProductRepository $productRepository
-     * @param Viewed $recentlyViewed
-     * @param SaveResult $saveResult
-     * @param QueryFactory $queryFactory
-     * @param DateTime $date DateTime
+     * @param Session                        $customerSession
+     * @param SessionFactory                 $sessionFactory
+     * @param FilterBuilder                  $filterBuilder
+     * @param RecommendedProductLogger       $recommendedProductLogger
+     * @param SearchCriteriaBuilder          $searchCriteriaBuilder
+     * @param ProductRepository              $productRepository
+     * @param Viewed                         $recentlyViewed
+     * @param SaveResult                     $saveResult
+     * @param QueryFactory                   $queryFactory
+     * @param DateTime                       $date                           DateTime
      */
     public function __construct(
         RecommendedInterfaceFactory $recommendedInterfaceFactory,
@@ -153,13 +155,16 @@ class SearchResultInfo implements ObserverInterface
 
     /**
      * Execute Observer
-     * @param Observer $observer
+     *
+     * @param  Observer $observer
      * @return $this|void
      * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
-        /** check the customer is logged in */
+        /**
+         * check the customer is logged in
+         */
         $customer = $this->customerSessionFactory->create();
         if ($customer->isLoggedIn()) {
             $searchTerm = $this->queryFactory->get()->getQueryText();
@@ -168,7 +173,9 @@ class SearchResultInfo implements ObserverInterface
             $product = $this->productRepository->getList($searchCriteria);
             $customerId = $customer->getCustomerId();
             $date = $this->date->gmtDate();
-            /** check the product exist in magento */
+            /**
+             * check the product exist in magento
+             */
             if ($product->getTotalCount()) {
                 try {
                     $filter1 = [];
@@ -189,7 +196,9 @@ class SearchResultInfo implements ObserverInterface
                         ->addFilters($filter2)
                         ->create();
                     $productExist = $this->recommendedRepositoryInterface->getList($searchCriteria);
-                    /** check the product exist in custom table and save the product */
+                    /**
+                     * check the product exist in custom table and save the product
+                     */
                     if ($productExist->getTotalCount()) {
                         $this->saveResult->saveProducts(
                             $productExist,
@@ -199,7 +208,9 @@ class SearchResultInfo implements ObserverInterface
                             $date
                         );
                     } else {
-                        /** Save new product to custom table */
+                        /**
+                         * Save new product to custom table
+                         */
                         foreach ($product->getItems() as $searchItem) {
                             $this->saveResult->saveSearchResult(
                                 self::PRIORITY,

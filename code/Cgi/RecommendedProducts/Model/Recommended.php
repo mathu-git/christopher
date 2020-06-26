@@ -20,6 +20,7 @@ use Magento\Framework\Registry;
 
 /**
  * Class Recommended
+ *
  * @package Cgi\RecommendedProducts\Model
  */
 class Recommended extends AbstractModel
@@ -36,13 +37,14 @@ class Recommended extends AbstractModel
 
     /**
      * Recommended Constructor
-     * @param Context $context Context for parent
-     * @param Registry $registry Registry
+     *
+     * @param Context                     $context                Context for parent
+     * @param Registry                    $registry               Registry
      * @param RecommendedInterfaceFactory $recommendedDataFactory Recommended Factory
-     * @param DataObjectHelper $dataObjectHelper Data Object Helper
-     * @param ResourceModel\Recommended $resource Resource Model
-     * @param Collection $resourceCollection Collection
-     * @param array $data data array
+     * @param DataObjectHelper            $dataObjectHelper       Data Object Helper
+     * @param ResourceModel\Recommended   $resource               Resource Model
+     * @param Collection                  $resourceCollection     Collection
+     * @param array                       $data                   data array
      */
     public function __construct(
         Context $context,
@@ -60,6 +62,7 @@ class Recommended extends AbstractModel
 
     /**
      * Retrieve recommended model with recommended data
+     *
      * @return RecommendedInterface
      */
     public function getDataModel()

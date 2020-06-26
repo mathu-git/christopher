@@ -16,6 +16,7 @@ use Magento\Framework\View\Result\Layout;
 
 /**
  * Class Index
+ *
  * @package Cgi\RecommendedProducts\Controller\Adminhtml\Index
  */
 class Index extends \Magento\Customer\Controller\Adminhtml\Index

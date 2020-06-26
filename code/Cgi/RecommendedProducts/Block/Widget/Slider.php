@@ -29,6 +29,7 @@ use Magento\Widget\Block\BlockInterface;
 
 /**
  * Class Slider
+ *
  * @package Cgi\RecommendedProducts\Block\Widget
  */
 class Slider extends ListProduct implements BlockInterface
@@ -46,29 +47,30 @@ class Slider extends ListProduct implements BlockInterface
     /**
      * @var Session
      */
-    private $customerSession;
+    protected $customerSession;
 
     /**
      * @var CollectionFactory
      */
-    private $collectionFactory;
+    protected $collectionFactory;
 
     /**
      * @var FormKey
      */
-    private $formKey;
+    protected $formKey;
 
     /**
      * Slider constructor.
-     * @param Session $customerSession
-     * @param CollectionFactory $collectionFactory
-     * @param Context $context
-     * @param PostHelper $postDataHelper
-     * @param Resolver $layerResolver
-     * @param FormKey $formKey
+     *
+     * @param Session                     $customerSession
+     * @param CollectionFactory           $collectionFactory
+     * @param Context                     $context
+     * @param PostHelper                  $postDataHelper
+     * @param Resolver                    $layerResolver
+     * @param FormKey                     $formKey
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param Data $urlHelper
-     * @param array $data
+     * @param Data                        $urlHelper
+     * @param array                       $data
      */
     public function __construct(
         Session $customerSession,
@@ -100,7 +102,9 @@ class Slider extends ListProduct implements BlockInterface
     {
         $customer = $this->getCustomerLoggedIn();
         $collection = [];
-        /** Check the customer is Logged In */
+        /**
+         * Check the customer is Logged In
+        */
         if ($customer->isLoggedIn()) {
             $customerId = $customer->getCustomerId();
             $joinConditions = 'u.product_id = e.entity_id';

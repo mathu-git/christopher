@@ -15,6 +15,7 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 /**
  * Class Recommended
+ *
  * @package Cgi\RecommendedProducts\Model\ResourceModel
  */
 class Recommended extends AbstractDb
@@ -26,6 +27,7 @@ class Recommended extends AbstractDb
 
     /**
      * Initialize resource
+     *
      * @return void
      */
     public function _construct()

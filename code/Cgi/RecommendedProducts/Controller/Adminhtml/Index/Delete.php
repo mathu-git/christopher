@@ -13,6 +13,7 @@ namespace Cgi\RecommendedProducts\Controller\Adminhtml\Index;
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\App\ResponseInterface;
@@ -22,32 +23,34 @@ use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class Delete
+ *
  * @package Cgi\RecommendedProducts\Controller\Adminhtml\Index
  */
-class Delete extends \Magento\Backend\App\Action
+class Delete extends Action
 {
     /**
      * @var RedirectInterface
      */
-    private $redirect;
+    protected $redirect;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    private $recommendedRepositoryInterface;
+    protected $recommendedRepositoryInterface;
 
     /**
      * @var RecommendedProductLogger
      */
-    private $recommendedProductLogger;
+    protected $recommendedProductLogger;
 
     /**
      * Delete constructor.
-     * @param Context $context
-     * @param ResultFactory $resultFactory
+     *
+     * @param Context                        $context
+     * @param ResultFactory                  $resultFactory
      * @param RecommendedRepositoryInterface $recommendedRepositoryInterface
-     * @param RecommendedProductLogger $recommendedProductLogger
-     * @param RedirectInterface $redirect
+     * @param RecommendedProductLogger       $recommendedProductLogger
+     * @param RedirectInterface              $redirect
      */
     public function __construct(
         Context $context,
@@ -69,7 +72,9 @@ class Delete extends \Magento\Backend\App\Action
     public function execute()
     {
         $customerId = $this->getRequest()->getParam(RecommendedInterface::ID);
-        /** Check Customer Id is Exist */
+        /**
+         * Check Customer Id is Exist
+        */
         if (isset($customerId)) {
             try {
                 $this->recommendedRepositoryInterface->deleteById($customerId);

@@ -15,12 +15,14 @@ use Magento\Framework\Api\AbstractExtensibleObject;
 
 /**
  * Class Litter
+ *
  * @package Cgi\RecommendedProducts\Model\Data
  */
 class Recommended extends AbstractExtensibleObject implements RecommendedInterface
 {
     /**
      * Get ID
+     *
      * @return int
      */
     public function getId()
@@ -30,6 +32,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get entity_id
+     *
      * @return int
      */
     public function getEntityId()
@@ -39,7 +42,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set entity_id
-     * @param int $entityId
+     *
+     * @param  int $entityId
      * @return RecommendedInterface
      */
     public function setEntityId($entityId)
@@ -49,7 +53,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set id
-     * @param int $id
+     *
+     * @param  int $id
      * @return RecommendedInterface
      */
     public function setId($id)
@@ -59,6 +64,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get recommended_type
+     *
      * @return string
      */
     public function getType()
@@ -68,7 +74,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set recommended_type
-     * @param string $type
+     *
+     * @param  string $type
      * @return RecommendedInterface
      */
     public function setType($type)
@@ -78,6 +85,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get customer_id
+     *
      * @return string
      */
     public function getCustomerId()
@@ -87,7 +95,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set customer_id
-     * @param string $customerId
+     *
+     * @param  string $customerId
      * @return RecommendedInterface
      */
     public function setCustomerId($customerId)
@@ -97,6 +106,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get product_id
+     *
      * @return string
      */
     public function getProductId()
@@ -106,7 +116,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set product_id
-     * @param string $productId
+     *
+     * @param  string $productId
      * @return RecommendedInterface
      */
     public function setProductId($productId)
@@ -116,6 +127,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get product_name
+     *
      * @return string
      */
     public function getProductName()
@@ -125,7 +137,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set product_name
-     * @param string $productName
+     *
+     * @param  string $productName
      * @return RecommendedInterface
      */
     public function setProductName($productName)
@@ -135,6 +148,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get product_sku
+     *
      * @return string
      */
     public function getProductSku()
@@ -144,7 +158,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set product_sku
-     * @param string $productSku
+     *
+     * @param  string $productSku
      * @return RecommendedInterface
      */
     public function setProductSku($productSku)
@@ -154,6 +169,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get created_at
+     *
      * @return string
      */
     public function getCreatedAt()
@@ -163,7 +179,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set created_at
-     * @param string $createdAt
+     *
+     * @param  string $createdAt
      * @return RecommendedInterface
      */
     public function setCreatedAt($createdAt)
@@ -173,6 +190,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get product_updated_at
+     *
      * @return string
      */
     public function getProductUpdatedAt()
@@ -182,7 +200,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set product_updated_at
-     * @param string $productUpdatedAt
+     *
+     * @param  string $productUpdatedAt
      * @return RecommendedInterface
      */
     public function setProductUpdatedAt($productUpdatedAt)
@@ -192,6 +211,7 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Get priority
+     *
      * @return string
      */
     public function getPriority()
@@ -201,7 +221,8 @@ class Recommended extends AbstractExtensibleObject implements RecommendedInterfa
 
     /**
      * Set priority
-     * @param string $priority
+     *
+     * @param  string $priority
      * @return RecommendedInterface
      */
     public function setPriority($priority)

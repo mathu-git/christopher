@@ -25,15 +25,16 @@ class Grid extends Collection
     /**
      * @var Http
      */
-    private $request;
+    protected $request;
 
     /**
      * Grid constructor.
-     * @param EntityFactory $entityFactory
-     * @param LoggerInterface $logger
+     *
+     * @param EntityFactory          $entityFactory
+     * @param LoggerInterface        $logger
      * @param FetchStrategyInterface $fetchStrategy
-     * @param ManagerInterface $eventManager
-     * @param AdapterInterface|null $connection
+     * @param ManagerInterface       $eventManager
+     * @param AdapterInterface|null  $connection
      */
     public function __construct(
         EntityFactory $entityFactory,

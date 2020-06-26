@@ -23,6 +23,7 @@ use Magento\Framework\UrlInterface;
 
 /**
  * Class AddToCart
+ *
  * @package Cgi\RecommendedProducts\Controller\Slider
  */
 class AddToCart extends Action
@@ -35,12 +36,12 @@ class AddToCart extends Action
     /**
      * @var FormKey
      */
-    private $formKey;
+    protected $formKey;
 
     /**
      * @var Cart
      */
-    private $cart;
+    protected $cart;
 
     /**
      * @var ManagerInterface
@@ -50,16 +51,17 @@ class AddToCart extends Action
     /**
      * @var Product
      */
-    private $product;
+    protected $product;
 
     /**
      * AddToCart constructor.
-     * @param Context $context
-     * @param UrlInterface $urlInterface
-     * @param FormKey $formKey
-     * @param Cart $cart
+     *
+     * @param Context          $context
+     * @param UrlInterface     $urlInterface
+     * @param FormKey          $formKey
+     * @param Cart             $cart
      * @param ManagerInterface $messageManager
-     * @param Product $product
+     * @param Product          $product
      */
     public function __construct(
         Context $context,

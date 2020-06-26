@@ -16,12 +16,14 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
  * Class Collection
+ *
  * @package Cgi\RecommendedProducts\Model\ResourceModel\Recommended
  */
 class Collection extends AbstractCollection
 {
     /**
      * Initialize resource collection
+     *
      * @return void
      */
     public function _construct()

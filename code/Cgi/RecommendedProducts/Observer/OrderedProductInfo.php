@@ -25,6 +25,7 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 
 /**
  * Class OrderedProductInfo
+ *
  * @package Cgi\RecommendedProducts\Observer
  */
 class OrderedProductInfo implements ObserverInterface
@@ -42,59 +43,60 @@ class OrderedProductInfo implements ObserverInterface
     /**
      * @var RecommendedInterfaceFactory
      */
-    private $recommendedInterfaceFactory;
+    protected $recommendedInterfaceFactory;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    private $recommendedRepositoryInterface;
+    protected $recommendedRepositoryInterface;
 
     /**
      * @var DateTime
      */
-    private $date;
+    protected $date;
 
     /**
      * @var CustomerSession
      */
-    private $customerSession;
+    protected $customerSession;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    private $searchCriteriaBuilder;
+    protected $searchCriteriaBuilder;
 
     /**
      * @var SaveResult
      */
-    private $saveResult;
+    protected $saveResult;
 
     /**
      * @var RecommendedProductLogger
      */
-    private $recommendedProductLogger;
+    protected $recommendedProductLogger;
 
     /**
      * @var FilterBuilder
      */
-    private $filterBuilder;
+    protected $filterBuilder;
 
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    protected $productRepository;
 
     /**
      * SaveRecommendedInfo constructor.
-     * @param RecommendedInterfaceFactory $recommendedInterfaceFactory Recommended Interface Factory
+     *
+     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory    Recommended Interface Factory
      * @param RecommendedRepositoryInterface $recommendedRepositoryInterface Recommended Repository Interface
-     * @param Session $customerSession
-     * @param SaveResult $saveResult
-     * @param ProductRepository $productRepository
-     * @param FilterBuilder $filterBuilder
-     * @param RecommendedProductLogger $recommendedProductLogger
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param DateTime $date DateTime
+     * @param Session                        $customerSession
+     * @param SaveResult                     $saveResult
+     * @param ProductRepository              $productRepository
+     * @param FilterBuilder                  $filterBuilder
+     * @param RecommendedProductLogger       $recommendedProductLogger
+     * @param SearchCriteriaBuilder          $searchCriteriaBuilder
+     * @param DateTime                       $date                           DateTime
      */
     public function __construct(
         RecommendedInterfaceFactory $recommendedInterfaceFactory,
@@ -120,12 +122,15 @@ class OrderedProductInfo implements ObserverInterface
 
     /**
      * Execute Observer
-     * @param Observer $observer
+     *
+     * @param  Observer $observer
      * @return $this|void
      */
     public function execute(Observer $observer)
     {
-        /** check the customer is logged in */
+        /**
+         * check the customer is logged in
+         */
         if ($this->customerSession->isLoggedIn()) {
             $order = $observer->getEvent()->getOrder();
             $customerId = $order->getCustomerId();
@@ -133,7 +138,9 @@ class OrderedProductInfo implements ObserverInterface
             try {
                 $orderProductId = [];
                 $filter1 = [];
-                /** Ordered Items */
+                /**
+                 * Ordered Items
+                 */
                 foreach ($order->getAllVisibleItems() as $recommendedItem) {
                     $orderProductId[] = $recommendedItem->getProductId();
                     $filter1[] = $this->filterBuilder
@@ -153,7 +160,9 @@ class OrderedProductInfo implements ObserverInterface
                     ->create();
                 $orderProductList = $this->recommendedRepositoryInterface->getList($searchCriteria);
                 $existedProductId = [];
-                /** check the product exist in custom table and save the product */
+                /**
+                 * check the product exist in custom table and save the product
+                 */
                 if ($orderProductList->getTotalCount()) {
                     foreach ($orderProductList->getItems() as $existedItem) {
                         $existedProductId[] = $existedItem->getProductId();
@@ -167,9 +176,13 @@ class OrderedProductInfo implements ObserverInterface
                     );
                 }
 
-                /** compare and get the not existed product id */
+                /**
+                 * compare and get the not existed product id
+                 */
                 $newProduct = array_diff($orderProductId, $existedProductId);
-                /** Save new product to custom table */
+                /**
+                 * Save new product to custom table
+                 */
                 if (!empty($newProduct)) {
                     foreach ($newProduct as $recommendedItem) {
                         $orderProduct = $this->productRepository->getById($recommendedItem);

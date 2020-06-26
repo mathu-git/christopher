@@ -19,6 +19,7 @@ use Magento\Ui\Component\Layout\Tabs\TabWrapper;
 
 /**
  * Class RecommendedTab
+ *
  * @package Cgi\RecommendedProducts\Block\Adminhtml
  */
 class RecommendedTab extends TabWrapper implements TabInterface
@@ -31,21 +32,21 @@ class RecommendedTab extends TabWrapper implements TabInterface
     /**
      * @var Http
      */
-    private $request;
+    protected $_request;
 
     /**
      * Constructor
      *
      * @param Context $context
-     * @param Http $request
-     * @param array $data
+     * @param Http    $_request
+     * @param array   $data
      */
     public function __construct(
         Context $context,
-        Http $request,
+        Http $_request,
         array $data = []
     ) {
-        $this->request = $request;
+        $this->_request = $_request;
         parent::__construct($context, $data);
     }
 
@@ -54,7 +55,7 @@ class RecommendedTab extends TabWrapper implements TabInterface
      */
     public function canShowTab()
     {
-        return $this->request->getParam(RecommendedInterface::ID);
+        return $this->_request->getParam(RecommendedInterface::ID);
     }
 
     /**

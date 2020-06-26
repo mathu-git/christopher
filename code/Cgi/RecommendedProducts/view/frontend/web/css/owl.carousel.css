@@ -49,12 +49,12 @@
   .owl-carousel .owl-item img {
     display: block;
     width: 100%; }
-  .owl-carousel .owl-nav.disabled,
-  .owl-carousel .owl-dots.disabled {
+.cgi-bestsaletabs .owl-nav.disabled,
+.cgi-bestsaletabs .owl-dots.disabled {
     display: none; }
-  .owl-carousel .owl-nav .owl-prev,
-  .owl-carousel .owl-nav .owl-next,
-  .owl-carousel .owl-dot {
+.cgi-bestsaletabs .owl-nav .owl-prev,
+.cgi-bestsaletabs .owl-nav .owl-next,
+.cgi-bestsaletabs .owl-dot {
     cursor: pointer;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -64,7 +64,7 @@
     position: absolute;
     left: 0;
     top: 50%;}
-.widget .owl-carousel .owl-nav .owl-prev {
+.cgi-bestsaletabs .owl-nav .owl-prev {
   background-image: url(../images/left.png);
   height: 35px;
   width: 22px;
@@ -72,7 +72,7 @@
   background-repeat: no-repeat;
   background-position: 0 0;
 }
-.widget .owl-carousel .owl-nav .owl-next
+.cgi-bestsaletabs .owl-nav .owl-next
 {
   background-image: url(../images/right.png);
   right: 0;

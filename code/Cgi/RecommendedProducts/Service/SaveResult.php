@@ -17,6 +17,7 @@ use Magento\Framework\Exception\LocalizedException as LocalizedExceptionAlias;
 
 /**
  * Class SaveResult
+ *
  * @package Cgi\RecommendedProducts\Service
  */
 class SaveResult
@@ -24,16 +25,17 @@ class SaveResult
     /**
      * @var RecommendedInterfaceFactory
      */
-    private $recommendedInterfaceFactory;
+    protected $recommendedInterfaceFactory;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    private $recommendedRepositoryInterface;
+    protected $recommendedRepositoryInterface;
 
     /**
      * SaveResult constructor.
-     * @param RecommendedInterfaceFactory $recommendedInterfaceFactory
+     *
+     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory
      * @param RecommendedRepositoryInterface $recommendedRepositoryInterface
      */
     public function __construct(
@@ -45,13 +47,13 @@ class SaveResult
     }
 
     /**
-     * @param int $priority Priority
-     * @param int $productId ProductId
-     * @param string $name Product Name
-     * @param string $sku Sku
-     * @param string $type Type
-     * @param string $customerId CustomerId
-     * @param int $date TimeStamp
+     * @param  int    $priority   Priority
+     * @param  int    $productId  ProductId
+     * @param  string $name       Product Name
+     * @param  string $sku        Sku
+     * @param  string $type       Type
+     * @param  string $customerId CustomerId
+     * @param  int    $date       TimeStamp
      * @return RecommendedInterface
      * @throws LocalizedExceptionAlias
      */
@@ -69,11 +71,11 @@ class SaveResult
     }
 
     /**
-     * @param array $orderProductList OrderProducts
-     * @param int $priority Priority
-     * @param string $type Type
-     * @param int $cId CustomerId
-     * @param int $date Date
+     * @param  array  $orderProductList OrderProducts
+     * @param  int    $priority         Priority
+     * @param  string $type             Type
+     * @param  int    $cId              CustomerId
+     * @param  int    $date             Date
      * @return RecommendedInterface
      * @throws LocalizedExceptionAlias
      */
@@ -82,9 +84,12 @@ class SaveResult
         foreach ($orderProductList->getItems() as $productExistItem) {
             $recommended = $this->recommendedRepositoryInterface
                 ->getById($productExistItem->getId());
-            /** check the priority and the customer is same or not */
+            /**
+             * check the priority and the customer is same or not
+             */
             if (($productExistItem->getPriority() > $priority)
-                && ($productExistItem->getCustomerId() == $cId)) {
+                && ($productExistItem->getCustomerId() == $cId)
+            ) {
                 $recommended->setPriority($priority)
                     ->setType($type)
                     ->setCustomerId($cId)

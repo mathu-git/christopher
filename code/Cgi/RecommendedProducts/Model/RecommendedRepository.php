@@ -25,6 +25,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class RecommendedProductsRepository
+ *
  * @package Cgi\RecommendedProducts\Model
  */
 class RecommendedRepository implements RecommendedRepositoryInterface
@@ -32,27 +33,27 @@ class RecommendedRepository implements RecommendedRepositoryInterface
     /**
      * @var RecommendedSearchResultsInterfaceFactory
      */
-    private $searchResultsFactory;
+    protected $searchResultsFactory;
 
     /**
      * @var CollectionProcessorInterface
      */
-    private $collectionProcessor;
+    protected $collectionProcessor;
 
     /**
      * @var ResourceRecommended
      */
-    private $resource;
+    protected $resource;
 
     /**
      * @var RecommendedCollectionFactory
      */
-    private $recommendedCollectionFactory;
+    protected $recommendedCollectionFactory;
 
     /**
      * @var RecommendedFactory
      */
-    private $recommendedFactory;
+    protected $recommendedFactory;
 
     /**
      * @var ExtensibleDataObjectConverter
@@ -61,12 +62,13 @@ class RecommendedRepository implements RecommendedRepositoryInterface
 
     /**
      * RecommendedProductsRepository constructor.
-     * @param ResourceRecommended $resource Resource Recommended
-     * @param RecommendedFactory $recommendedFactory Recommended Factory
-     * @param RecommendedCollectionFactory $recommendedCollectionFactory Recommended Collection Factory
-     * @param RecommendedSearchResultsInterfaceFactory $searchResultsFactory Recommended Search Results InterfaceFactory
-     * @param CollectionProcessorInterface $collectionProcessor Collection Processor Interface
-     * @param ExtensibleDataObjectConverter $extensibleDataObjectConverter Extensible DataObject Converter
+     *
+     * @param ResourceRecommended                      $resource                      Resource Recommended
+     * @param RecommendedFactory                       $recommendedFactory            Recommended Factory
+     * @param RecommendedCollectionFactory             $recommendedCollectionFactory  Recommended Collection Factory
+     * @param RecommendedSearchResultsInterfaceFactory $searchResultsFactory          Recommended Search Results InterfaceFactory
+     * @param CollectionProcessorInterface             $collectionProcessor           Collection Processor Interface
+     * @param ExtensibleDataObjectConverter            $extensibleDataObjectConverter Extensible DataObject Converter
      */
     public function __construct(
         ResourceRecommended $resource,
@@ -100,12 +102,16 @@ class RecommendedRepository implements RecommendedRepositoryInterface
             $recommendedModel->setData($recommendedData);
             $recommendedModel->save();
         } catch (\Exception $exception) {
-            throw new CouldNotSaveException(__(
-                'Could not save the recommended: %1',
-                $exception->getMessage()
-            ));
+            throw new CouldNotSaveException(
+                __(
+                    'Could not save the recommended: %1',
+                    $exception->getMessage()
+                )
+            );
         }
-        /** @var Recommended $recommendedModel */
+        /**
+         * @var Recommended $recommendedModel
+         */
         return $recommendedModel->getDataModel();
     }
 
@@ -114,7 +120,9 @@ class RecommendedRepository implements RecommendedRepositoryInterface
      */
     public function getById($entityId)
     {
-        /** @var Recommended $recommended */
+        /**
+         * @var Recommended $recommended
+         */
         $recommended = $this->recommendedFactory->create();
         $this->resource->load($recommended, $entityId);
         if (!$recommended->getId()) {
@@ -131,7 +139,9 @@ class RecommendedRepository implements RecommendedRepositoryInterface
         $collection = $this->recommendedCollectionFactory->create();
         $this->collectionProcessor->process($criteria, $collection);
         $searchResults = $this->searchResultsFactory->create();
-        /** @var RecommendedSearchResultsInterface $searchResults */
+        /**
+         * @var RecommendedSearchResultsInterface $searchResults
+         */
         $searchResults->setSearchCriteria($criteria);
         $searchResults->setItems($collection->getItems());
         $searchResults->setTotalCount($collection->getSize());
@@ -148,10 +158,12 @@ class RecommendedRepository implements RecommendedRepositoryInterface
             $this->resource->load($recommendedModel, $recommended->getEntityId());
             $this->resource->delete($recommendedModel);
         } catch (\Exception $exception) {
-            throw new CouldNotDeleteException(__(
-                'Could not delete the Recommended: %1',
-                $exception->getMessage()
-            ));
+            throw new CouldNotDeleteException(
+                __(
+                    'Could not delete the Recommended: %1',
+                    $exception->getMessage()
+                )
+            );
         }
         return true;
     }

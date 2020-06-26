@@ -14,6 +14,7 @@ use Magento\Framework\DataObject as DataObjectAlias;
 
 /**
  * Class Multiaction
+ *
  * @package Cgi\RecommendedProducts\Block\Adminhtml\Grid\Renderer
  */
 class Multiaction extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Action
@@ -21,8 +22,8 @@ class Multiaction extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Act
     /**
      * Render single action as link html
      *
-     * @param array $action
-     * @param DataObjectAlias $row
+     * @param  array           $action
+     * @param  DataObjectAlias $row
      * @return string|false
      */
     protected function _toLinkHtml($action, DataObjectAlias $row)

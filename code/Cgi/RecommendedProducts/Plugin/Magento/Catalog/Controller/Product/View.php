@@ -23,6 +23,7 @@ use Magento\Reports\Block\Product\Viewed;
 
 /**
  * Class View
+ *
  * @package Cgi\RecommendedProducts\Plugin\Magento\Catalog\Controller\Product
  */
 class View
@@ -40,59 +41,60 @@ class View
     /**
      * @var RecommendedInterfaceFactory
      */
-    private $recommendedInterfaceFactory;
+    protected $recommendedInterfaceFactory;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    private $recommendedRepositoryInterface;
+    protected $recommendedRepositoryInterface;
 
     /**
      * @var DateTime
      */
-    private $date;
+    protected $date;
 
     /**
      * @var CustomerSession
      */
-    private $customerSession;
+    protected $customerSession;
 
     /**
      * @var Viewed
      */
-    private $recentlyViewed;
+    protected $recentlyViewed;
 
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    protected $productRepository;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    private $searchCriteriaBuilder;
+    protected $searchCriteriaBuilder;
 
     /**
      * @var SaveResult
      */
-    private $saveResult;
+    protected $saveResult;
 
     /**
      * @var RecommendedProductLogger
      */
-    private $recommendedProductLogger;
+    protected $recommendedProductLogger;
 
     /**
      * SaveRecommendedInfo constructor.
-     * @param RecommendedInterfaceFactory $recommendedInterfaceFactory Recommended Interface Factory
+     *
+     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory    Recommended Interface Factory
      * @param RecommendedRepositoryInterface $recommendedRepositoryInterface Recommended Repository Interface
-     * @param Session $customerSession
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param ProductRepository $productRepository
-     * @param SaveResult $saveResult
-     * @param RecommendedProductLogger $recommendedProductLogger
-     * @param Viewed $recentlyViewed
-     * @param DateTime $date DateTime
+     * @param Session                        $customerSession
+     * @param SearchCriteriaBuilder          $searchCriteriaBuilder
+     * @param ProductRepository              $productRepository
+     * @param SaveResult                     $saveResult
+     * @param RecommendedProductLogger       $recommendedProductLogger
+     * @param Viewed                         $recentlyViewed
+     * @param DateTime                       $date                           DateTime
      */
     public function __construct(
         RecommendedInterfaceFactory $recommendedInterfaceFactory,
@@ -118,12 +120,15 @@ class View
 
     /**
      * Before Plugin
+     *
      * @param \Magento\Catalog\Controller\Product\View $subject
      */
     public function beforeExecute(
         \Magento\Catalog\Controller\Product\View $subject
     ) {
-        /** check the customer is logged in */
+        /**
+         * check the customer is logged in
+         */
         if ($this->customerSession->isLoggedIn()) {
             $customerId = $this->customerSession->getCustomerId();
             $date = $this->date->gmtDate();
@@ -137,9 +142,13 @@ class View
                     ->addFilter(RecommendedInterface::CUSTOMER_ID, $customerId, 'eq')
                     ->create();
                 $viewProductList = $this->recommendedRepositoryInterface->getList($searchCriteria);
-                /** check the product exist in custom table */
+                /**
+                 * check the product exist in custom table
+                 */
                 if ($viewProductList->getTotalCount()) {
-                    /** Viewed Product Items */
+                    /**
+                     * Viewed Product Items
+                     */
                     foreach ($viewProductList->getItems() as $productExistItem) {
                         $recommended = $this->recommendedRepositoryInterface
                             ->getById($productExistItem->getId());

@@ -21,29 +21,30 @@ class DeleteRecommendedProducts
     /**
      * @var RecommendedProductLogger
      */
-    private $productLogger;
+    protected $productLogger;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    private $recommendedRepository;
+    protected $recommendedRepository;
 
     /**
      * @var DateTime
      */
-    private $dateTime;
+    protected $dateTime;
 
     /**
      * @var CollectionFactory
      */
-    private $collectionFactory;
+    protected $collectionFactory;
 
     /**
      * DeleteRecommendedProducts constructor.
-     * @param RecommendedProductLogger $productLogger
+     *
+     * @param RecommendedProductLogger       $productLogger
      * @param RecommendedRepositoryInterface $recommendedRepository
-     * @param CollectionFactory $collectionFactory
-     * @param DateTime $dateTime
+     * @param CollectionFactory              $collectionFactory
+     * @param DateTime                       $dateTime
      */
     public function __construct(
         RecommendedProductLogger $productLogger,
