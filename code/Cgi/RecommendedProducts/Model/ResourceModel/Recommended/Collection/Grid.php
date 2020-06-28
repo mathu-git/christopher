@@ -30,11 +30,11 @@ class Grid extends Collection
     /**
      * Grid constructor.
      *
-     * @param EntityFactory          $entityFactory
-     * @param LoggerInterface        $logger
-     * @param FetchStrategyInterface $fetchStrategy
-     * @param ManagerInterface       $eventManager
-     * @param AdapterInterface|null  $connection
+     * @param EntityFactory          $entityFactory EntityFactor
+     * @param LoggerInterface        $logger    Logger
+     * @param FetchStrategyInterface $fetchStrategy Collection
+     * @param ManagerInterface       $eventManager  EventManager
+     * @param AdapterInterface|null  $connection AdapterInterface
      */
     public function __construct(
         EntityFactory $entityFactory,
@@ -55,6 +55,8 @@ class Grid extends Collection
     }
 
     /**
+     * Display Products Based on Condition
+     *
      * @return Grid|void
      */
     protected function _initSelect()

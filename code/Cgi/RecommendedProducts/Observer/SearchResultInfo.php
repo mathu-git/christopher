@@ -11,12 +11,11 @@
 namespace Cgi\RecommendedProducts\Observer;
 
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
-use Cgi\RecommendedProducts\Api\Data\RecommendedInterfaceFactory;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Cgi\RecommendedProducts\Service\SaveResult;
+use Exception;
 use Magento\Catalog\Model\ProductRepository;
-use Magento\Customer\Model\Session;
 use Magento\Customer\Model\SessionFactory;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -50,24 +49,14 @@ class SearchResultInfo implements ObserverInterface
     public const NAME = 'name';
 
     /**
-     * @var RecommendedInterfaceFactory
-     */
-    protected $recommendedInterfaceFactory;
-
-    /**
      * @var RecommendedRepositoryInterface
      */
-    protected $recommendedRepositoryInterface;
+    protected $recommendedRepo;
 
     /**
      * @var DateTime
      */
     protected $date;
-
-    /**
-     * @var CustomerSession
-     */
-    protected $customerSession;
 
     /**
      * @var Viewed
@@ -82,7 +71,7 @@ class SearchResultInfo implements ObserverInterface
     /**
      * @var SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    protected $searchCriteria;
 
     /**
      * @var QueryFactory
@@ -90,9 +79,9 @@ class SearchResultInfo implements ObserverInterface
     protected $queryFactory;
 
     /**
-     * @var SessionFactory
+     * @var CustomerSessionFactory
      */
-    protected $customerSessionFactory;
+    protected $customerSession;
 
     /**
      * @var SaveResult
@@ -102,7 +91,7 @@ class SearchResultInfo implements ObserverInterface
     /**
      * @var RecommendedProductLogger
      */
-    protected $recommendedProductLogger;
+    protected $logger;
 
     /**
      * @var FilterBuilder
@@ -112,41 +101,35 @@ class SearchResultInfo implements ObserverInterface
     /**
      * SaveRecommendedInfo constructor.
      *
-     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory    Recommended Interface Factory
-     * @param RecommendedRepositoryInterface $recommendedRepositoryInterface Recommended Repository Interface
-     * @param Session                        $customerSession
-     * @param SessionFactory                 $sessionFactory
-     * @param FilterBuilder                  $filterBuilder
-     * @param RecommendedProductLogger       $recommendedProductLogger
-     * @param SearchCriteriaBuilder          $searchCriteriaBuilder
-     * @param ProductRepository              $productRepository
-     * @param Viewed                         $recentlyViewed
-     * @param SaveResult                     $saveResult
-     * @param QueryFactory                   $queryFactory
-     * @param DateTime                       $date                           DateTime
+     * @param RecommendedRepositoryInterface $recommendedRepo Recommended Repository Interface
+     * @param SessionFactory $sessionFactory CustomerSessionFactory
+     * @param FilterBuilder $filterBuilder FilterBuilder
+     * @param RecommendedProductLogger $logger Logger
+     * @param SearchCriteriaBuilder $searchCriteria SearchCriteriaBuilder
+     * @param ProductRepository $productRepository ProductRepository
+     * @param Viewed $recentlyViewed Recently Viewed Product
+     * @param SaveResult $saveResult Service
+     * @param QueryFactory $queryFactory Query
+     * @param DateTime $date DateTime
      */
     public function __construct(
-        RecommendedInterfaceFactory $recommendedInterfaceFactory,
-        RecommendedRepositoryInterface $recommendedRepositoryInterface,
-        Session $customerSession,
+        RecommendedRepositoryInterface $recommendedRepo,
         SessionFactory $sessionFactory,
         FilterBuilder $filterBuilder,
-        RecommendedProductLogger $recommendedProductLogger,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        RecommendedProductLogger $logger,
+        SearchCriteriaBuilder $searchCriteria,
         ProductRepository $productRepository,
         Viewed $recentlyViewed,
         SaveResult $saveResult,
         QueryFactory $queryFactory,
         DateTime $date
     ) {
-        $this->recommendedInterfaceFactory = $recommendedInterfaceFactory;
-        $this->recommendedRepositoryInterface = $recommendedRepositoryInterface;
-        $this->customerSessionFactory = $sessionFactory;
-        $this->customerSession = $customerSession;
-        $this->recommendedProductLogger = $recommendedProductLogger;
+        $this->recommendedRepo = $recommendedRepo;
+        $this->customerSession = $sessionFactory;
+        $this->logger = $logger;
         $this->recentlyViewed = $recentlyViewed;
         $this->productRepository = $productRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->searchCriteria = $searchCriteria;
         $this->queryFactory = $queryFactory;
         $this->saveResult = $saveResult;
         $this->filterBuilder = $filterBuilder;
@@ -154,21 +137,20 @@ class SearchResultInfo implements ObserverInterface
     }
 
     /**
-     * Execute Observer
+     * Execute Observer When Search
      *
      * @param  Observer $observer
      * @return $this|void
-     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
         /**
          * check the customer is logged in
          */
-        $customer = $this->customerSessionFactory->create();
+        $customer = $this->customerSession->create();
         if ($customer->isLoggedIn()) {
             $searchTerm = $this->queryFactory->get()->getQueryText();
-            $searchCriteria = $this->searchCriteriaBuilder
+            $searchCriteria = $this->searchCriteria
                 ->addFilter(self::NAME, $searchTerm, 'eq')->create();
             $product = $this->productRepository->getList($searchCriteria);
             $customerId = $customer->getCustomerId();
@@ -191,11 +173,11 @@ class SearchResultInfo implements ObserverInterface
                         ->setConditionType('like')
                         ->setValue($customerId)
                         ->create();
-                    $searchCriteria = $this->searchCriteriaBuilder
+                    $searchCriteria = $this->searchCriteria
                         ->addFilters($filter1)
                         ->addFilters($filter2)
                         ->create();
-                    $productExist = $this->recommendedRepositoryInterface->getList($searchCriteria);
+                    $productExist = $this->recommendedRepo->getList($searchCriteria);
                     /**
                      * check the product exist in custom table and save the product
                      */
@@ -223,8 +205,8 @@ class SearchResultInfo implements ObserverInterface
                             );
                         }
                     }
-                } catch (\Exception $e) {
-                    $this->recommendedProductLogger->critical($e->getMessage());
+                } catch (Exception $e) {
+                    $this->logger->critical($e->getMessage());
                 }
             }
             return $this;

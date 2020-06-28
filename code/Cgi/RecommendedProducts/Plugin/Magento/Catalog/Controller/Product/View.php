@@ -11,10 +11,10 @@
 namespace Cgi\RecommendedProducts\Plugin\Magento\Catalog\Controller\Product;
 
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
-use Cgi\RecommendedProducts\Api\Data\RecommendedInterfaceFactory;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Cgi\RecommendedProducts\Service\SaveResult;
+use Exception;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -39,14 +39,9 @@ class View
     public const PRIORITY = '3';
 
     /**
-     * @var RecommendedInterfaceFactory
-     */
-    protected $recommendedInterfaceFactory;
-
-    /**
      * @var RecommendedRepositoryInterface
      */
-    protected $recommendedRepositoryInterface;
+    protected $recommendedRepo;
 
     /**
      * @var DateTime
@@ -71,7 +66,7 @@ class View
     /**
      * @var SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    protected $searchCriteria;
 
     /**
      * @var SaveResult
@@ -81,47 +76,45 @@ class View
     /**
      * @var RecommendedProductLogger
      */
-    protected $recommendedProductLogger;
+    protected $logger;
 
     /**
      * SaveRecommendedInfo constructor.
      *
-     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory    Recommended Interface Factory
-     * @param RecommendedRepositoryInterface $recommendedRepositoryInterface Recommended Repository Interface
+     * @param RecommendedRepositoryInterface $recommendedRepo Recommended Repository Interface
      * @param Session                        $customerSession
-     * @param SearchCriteriaBuilder          $searchCriteriaBuilder
+     * @param SearchCriteriaBuilder          $searchCriteria
      * @param ProductRepository              $productRepository
      * @param SaveResult                     $saveResult
-     * @param RecommendedProductLogger       $recommendedProductLogger
+     * @param RecommendedProductLogger       $logger
      * @param Viewed                         $recentlyViewed
      * @param DateTime                       $date                           DateTime
      */
     public function __construct(
-        RecommendedInterfaceFactory $recommendedInterfaceFactory,
-        RecommendedRepositoryInterface $recommendedRepositoryInterface,
+        RecommendedRepositoryInterface $recommendedRepo,
         Session $customerSession,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SearchCriteriaBuilder $searchCriteria,
         ProductRepository $productRepository,
         SaveResult $saveResult,
-        RecommendedProductLogger $recommendedProductLogger,
+        RecommendedProductLogger $logger,
         Viewed $recentlyViewed,
         DateTime $date
     ) {
-        $this->recommendedInterfaceFactory = $recommendedInterfaceFactory;
-        $this->recommendedRepositoryInterface = $recommendedRepositoryInterface;
+        $this->recommendedRepo = $recommendedRepo;
         $this->customerSession = $customerSession;
         $this->saveResult = $saveResult;
         $this->recentlyViewed = $recentlyViewed;
-        $this->recommendedProductLogger = $recommendedProductLogger;
+        $this->logger = $logger;
         $this->productRepository = $productRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->searchCriteria = $searchCriteria;
         $this->date = $date;
     }
 
     /**
-     * Before Plugin
+     * Before Plugin for Viewing the product
      *
      * @param \Magento\Catalog\Controller\Product\View $subject
+     * @return View
      */
     public function beforeExecute(
         \Magento\Catalog\Controller\Product\View $subject
@@ -129,32 +122,38 @@ class View
         /**
          * check the customer is logged in
          */
+        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/templog.log');
+        $logger = new \Zend\Log\Logger();
+        $logger->addWriter($writer);
         if ($this->customerSession->isLoggedIn()) {
+            $logger->info(print_r('1', true));
             $customerId = $this->customerSession->getCustomerId();
             $date = $this->date->gmtDate();
             try {
+                $logger->info(print_r('2', true));
                 $productId = (int)$subject->getRequest()->getParam(RecommendedInterface::ID);
                 $productRepository = $this->productRepository->getById($productId);
                 $productName = $productRepository->getName();
                 $productSku = $productRepository->getSku();
-                $searchCriteria = $this->searchCriteriaBuilder
+                $searchCriteria = $this->searchCriteria
                     ->addFilter(RecommendedInterface::PRODUCT_ID, $productId, 'eq')
                     ->addFilter(RecommendedInterface::CUSTOMER_ID, $customerId, 'eq')
                     ->create();
-                $viewProductList = $this->recommendedRepositoryInterface->getList($searchCriteria);
+                $viewProductList = $this->recommendedRepo->getList($searchCriteria);
                 /**
                  * check the product exist in custom table
                  */
                 if ($viewProductList->getTotalCount()) {
+                    $logger->info(print_r('3', true));
                     /**
                      * Viewed Product Items
                      */
                     foreach ($viewProductList->getItems() as $productExistItem) {
-                        $recommended = $this->recommendedRepositoryInterface
+                        $recommended = $this->recommendedRepo
                             ->getById($productExistItem->getId());
-                        $recommended->setCreatedAt($date);
+                        $recommended->setProductUpdatedAt($date);
                     }
-                    $this->recommendedRepositoryInterface->save($recommended);
+                    $this->recommendedRepo->save($recommended);
                 } else {
                     $this->saveResult->saveSearchResult(
                         self::PRIORITY,
@@ -166,10 +165,10 @@ class View
                         $date
                     );
                 }
-            } catch (\Exception $e) {
-                $this->recommendedProductLogger->critical($e->getMessage());
+            } catch (Exception $e) {
+                $this->logger->critical($e->getMessage());
             }
-            return $this;
         }
+        return $this;
     }
 }

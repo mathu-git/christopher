@@ -28,7 +28,7 @@ class Recommended extends AbstractModel
     /**
      * @var RecommendedInterfaceFactory
      */
-    protected $recommendedDataFactory;
+    protected $recommendedFactory;
 
     /**
      * @var DataObjectHelper
@@ -40,7 +40,7 @@ class Recommended extends AbstractModel
      *
      * @param Context                     $context                Context for parent
      * @param Registry                    $registry               Registry
-     * @param RecommendedInterfaceFactory $recommendedDataFactory Recommended Factory
+     * @param RecommendedInterfaceFactory $recommendedFactory Recommended Factory
      * @param DataObjectHelper            $dataObjectHelper       Data Object Helper
      * @param ResourceModel\Recommended   $resource               Resource Model
      * @param Collection                  $resourceCollection     Collection
@@ -49,13 +49,13 @@ class Recommended extends AbstractModel
     public function __construct(
         Context $context,
         Registry $registry,
-        RecommendedInterfaceFactory $recommendedDataFactory,
+        RecommendedInterfaceFactory $recommendedFactory,
         DataObjectHelper $dataObjectHelper,
         ResourceModel\Recommended $resource,
         Collection $resourceCollection,
         array $data = []
     ) {
-        $this->recommendedDataFactory = $recommendedDataFactory;
+        $this->recommendedFactory = $recommendedFactory;
         $this->dataObjectHelper = $dataObjectHelper;
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
     }
@@ -68,12 +68,12 @@ class Recommended extends AbstractModel
     public function getDataModel()
     {
         $recommendedData = $this->getData();
-        $recommendedDataObject = $this->recommendedDataFactory->create();
+        $recommendedObj = $this->recommendedFactory->create();
         $this->dataObjectHelper->populateWithArray(
-            $recommendedDataObject,
+            $recommendedObj,
             $recommendedData,
             RecommendedInterface::class
         );
-        return $recommendedDataObject;
+        return $recommendedObj;
     }
 }

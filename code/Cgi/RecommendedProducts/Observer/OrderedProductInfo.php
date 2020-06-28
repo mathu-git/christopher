@@ -11,10 +11,10 @@
 namespace Cgi\RecommendedProducts\Observer;
 
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
-use Cgi\RecommendedProducts\Api\Data\RecommendedInterfaceFactory;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Cgi\RecommendedProducts\Service\SaveResult;
+use Exception;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\FilterBuilder;
@@ -22,6 +22,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Sales\Model\Order;
 
 /**
  * Class OrderedProductInfo
@@ -41,14 +42,9 @@ class OrderedProductInfo implements ObserverInterface
     public const PRIORITY = '1';
 
     /**
-     * @var RecommendedInterfaceFactory
-     */
-    protected $recommendedInterfaceFactory;
-
-    /**
      * @var RecommendedRepositoryInterface
      */
-    protected $recommendedRepositoryInterface;
+    protected $recommendedRepo;
 
     /**
      * @var DateTime
@@ -56,14 +52,14 @@ class OrderedProductInfo implements ObserverInterface
     protected $date;
 
     /**
-     * @var CustomerSession
+     * @var Session
      */
     protected $customerSession;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    protected $searchCriteria;
 
     /**
      * @var SaveResult
@@ -73,7 +69,7 @@ class OrderedProductInfo implements ObserverInterface
     /**
      * @var RecommendedProductLogger
      */
-    protected $recommendedProductLogger;
+    protected $recommendedLogger;
 
     /**
      * @var FilterBuilder
@@ -88,40 +84,37 @@ class OrderedProductInfo implements ObserverInterface
     /**
      * SaveRecommendedInfo constructor.
      *
-     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory    Recommended Interface Factory
-     * @param RecommendedRepositoryInterface $recommendedRepositoryInterface Recommended Repository Interface
-     * @param Session                        $customerSession
-     * @param SaveResult                     $saveResult
-     * @param ProductRepository              $productRepository
-     * @param FilterBuilder                  $filterBuilder
-     * @param RecommendedProductLogger       $recommendedProductLogger
-     * @param SearchCriteriaBuilder          $searchCriteriaBuilder
-     * @param DateTime                       $date                           DateTime
+     * @param RecommendedRepositoryInterface $recommendedRepo    Recommended Repository Interface
+     * @param Session                        $customerSession   CustomerSession
+     * @param SaveResult                     $saveResult    Service
+     * @param ProductRepository              $productRepository ProductRepository
+     * @param FilterBuilder                  $filterBuilder FilterBuilder
+     * @param RecommendedProductLogger       $recommendedLogger  Logger
+     * @param SearchCriteriaBuilder          $searchCriteria SearchCriteriaBuilder
+     * @param DateTime                       $date  DateTime
      */
     public function __construct(
-        RecommendedInterfaceFactory $recommendedInterfaceFactory,
-        RecommendedRepositoryInterface $recommendedRepositoryInterface,
+        RecommendedRepositoryInterface $recommendedRepo,
         Session $customerSession,
         SaveResult $saveResult,
         ProductRepository $productRepository,
         FilterBuilder $filterBuilder,
-        RecommendedProductLogger $recommendedProductLogger,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        RecommendedProductLogger $recommendedLogger,
+        SearchCriteriaBuilder $searchCriteria,
         DateTime $date
     ) {
-        $this->recommendedInterfaceFactory = $recommendedInterfaceFactory;
-        $this->recommendedRepositoryInterface = $recommendedRepositoryInterface;
+        $this->recommendedRepo = $recommendedRepo;
         $this->customerSession = $customerSession;
         $this->saveResult = $saveResult;
         $this->productRepository = $productRepository;
         $this->filterBuilder = $filterBuilder;
-        $this->recommendedProductLogger = $recommendedProductLogger;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->recommendedLogger = $recommendedLogger;
+        $this->searchCriteria = $searchCriteria;
         $this->date = $date;
     }
 
     /**
-     * Execute Observer
+     * Execute Observer When Order Place
      *
      * @param  Observer $observer
      * @return $this|void
@@ -133,6 +126,7 @@ class OrderedProductInfo implements ObserverInterface
          */
         if ($this->customerSession->isLoggedIn()) {
             $order = $observer->getEvent()->getOrder();
+            /* @var Order $order */
             $customerId = $order->getCustomerId();
             $date = $this->date->gmtDate();
             try {
@@ -154,11 +148,11 @@ class OrderedProductInfo implements ObserverInterface
                     ->setConditionType('like')
                     ->setValue($customerId)
                     ->create();
-                $searchCriteria = $this->searchCriteriaBuilder
+                $searchCriteria = $this->searchCriteria
                     ->addFilters($filter1)
                     ->addFilters($filter2)
                     ->create();
-                $orderProductList = $this->recommendedRepositoryInterface->getList($searchCriteria);
+                $orderProductList = $this->recommendedRepo->getList($searchCriteria);
                 $existedProductId = [];
                 /**
                  * check the product exist in custom table and save the product
@@ -197,8 +191,8 @@ class OrderedProductInfo implements ObserverInterface
                         );
                     }
                 }
-            } catch (\Exception $e) {
-                $this->recommendedProductLogger->critical($e->getMessage());
+            } catch (Exception $e) {
+                $this->recommendedLogger->critical($e->getMessage());
             }
             return $this;
         }

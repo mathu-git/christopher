@@ -45,10 +45,10 @@ class Products extends Action
     /**
      * Products constructor.
      *
-     * @param Context     $context
-     * @param Slider      $slider
-     * @param Output      $_helper
-     * @param PageFactory $resultPageFactory
+     * @param Context     $context  Context for parent
+     * @param Slider      $slider   Block
+     * @param Output      $_helper  Helper
+     * @param PageFactory $resultPageFactory Redirection
      */
     public function __construct(
         Context $context,
@@ -75,6 +75,8 @@ class Products extends Action
     }
 
     /**
+     * Ajax Slider
+     *
      * @param  $collection
      * @throws LocalizedException
      */
@@ -105,7 +107,7 @@ class Products extends Action
                     $html .= '<div class="products wrapper grid products-grid">';
                 $html .= '<div class="product_count" value="' . $product_count . '">' . $product_count . '</div>';
                 $iterator = 1;
-                $html .= '<ol class="products list items product-items owlslider">';
+                $html .= '<ol class="products list items product-items owl-carousel owlslider">';
             foreach ($collection as $_product) :
                     $html .= $iterator++ == 1 ? '<li class="item product product-item">' : '</li>
 <li class="item product product-item">';

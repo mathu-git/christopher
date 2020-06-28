@@ -25,28 +25,30 @@ class SaveResult
     /**
      * @var RecommendedInterfaceFactory
      */
-    protected $recommendedInterfaceFactory;
+    protected $recommendedFact;
 
     /**
      * @var RecommendedRepositoryInterface
      */
-    protected $recommendedRepositoryInterface;
+    protected $recommendedRepo;
 
     /**
      * SaveResult constructor.
      *
-     * @param RecommendedInterfaceFactory    $recommendedInterfaceFactory
-     * @param RecommendedRepositoryInterface $recommendedRepositoryInterface
+     * @param RecommendedInterfaceFactory    $recommendedFact   RecommendedInterfaceFactory
+     * @param RecommendedRepositoryInterface $recommendedRepo   RecommendedRepositoryInterface
      */
     public function __construct(
-        RecommendedInterfaceFactory $recommendedInterfaceFactory,
-        RecommendedRepositoryInterface $recommendedRepositoryInterface
+        RecommendedInterfaceFactory $recommendedFact,
+        RecommendedRepositoryInterface $recommendedRepo
     ) {
-        $this->recommendedInterfaceFactory = $recommendedInterfaceFactory;
-        $this->recommendedRepositoryInterface = $recommendedRepositoryInterface;
+        $this->recommendedFact = $recommendedFact;
+        $this->recommendedRepo = $recommendedRepo;
     }
 
     /**
+     * Save New Product for Slider
+     * 
      * @param  int    $priority   Priority
      * @param  int    $productId  ProductId
      * @param  string $name       Product Name
@@ -59,7 +61,7 @@ class SaveResult
      */
     public function saveSearchResult($priority, $productId, $name, $sku, $type, $customerId, $date)
     {
-        $recommended = $this->recommendedInterfaceFactory->create();
+        $recommended = $this->recommendedFact->create();
         $recommended->setPriority($priority)
             ->setProductId($productId)
             ->setProductName($name)
@@ -67,10 +69,12 @@ class SaveResult
             ->setType($type)
             ->setCustomerId($customerId)
             ->setCreatedAt($date);
-        return $this->recommendedRepositoryInterface->save($recommended);
+        return $this->recommendedRepo->save($recommended);
     }
 
     /**
+     * Update Product for Slider
+     *
      * @param  array  $orderProductList OrderProducts
      * @param  int    $priority         Priority
      * @param  string $type             Type
@@ -82,7 +86,7 @@ class SaveResult
     public function saveProducts($orderProductList, $priority, $type, $cId, $date)
     {
         foreach ($orderProductList->getItems() as $productExistItem) {
-            $recommended = $this->recommendedRepositoryInterface
+            $recommended = $this->recommendedRepo
                 ->getById($productExistItem->getId());
             /**
              * check the priority and the customer is same or not
@@ -97,7 +101,7 @@ class SaveResult
             } elseif ($productExistItem->getCustomerId() == $cId) {
                 $recommended->setProductUpdatedAt($date);
             }
-            return $this->recommendedRepositoryInterface->save($recommended);
+            return $this->recommendedRepo->save($recommended);
         }
     }
 }

@@ -10,7 +10,7 @@
 
 namespace Cgi\RecommendedProducts\Controller\Slider;
 
-use Magento\Catalog\Model\Product;
+use Exception;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\App\Action\Action;
@@ -20,7 +20,6 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\UrlInterface;
 
 /**
  * Class AddToCart
@@ -30,9 +29,9 @@ use Magento\Framework\UrlInterface;
 class AddToCart extends Action
 {
     /**
-     * @var UrlInterface
+     * Product Qty
      */
-    private $_urlInterface;
+    public const PRODUCT_QTY = 1;
 
     /**
      * @var FormKey
@@ -47,12 +46,7 @@ class AddToCart extends Action
     /**
      * @var ManagerInterface
      */
-    private $_messageManager;
-
-    /**
-     * @var Product
-     */
-    protected $product;
+    protected $messageManager;
 
     /**
      * @var ProductRepository
@@ -62,33 +56,29 @@ class AddToCart extends Action
     /**
      * AddToCart constructor.
      *
-     * @param Context $context
-     * @param UrlInterface $urlInterface
-     * @param FormKey $formKey
-     * @param ProductRepository $productRepository
-     * @param Cart $cart
-     * @param ManagerInterface $messageManager
-     * @param Product $product
+     * @param Context $context Context for parent
+     * @param FormKey $formKey Form Key
+     * @param ProductRepository $productRepository Product Repository
+     * @param Cart $cart Cart Items
+     * @param ManagerInterface $messageManager Message Manager
      */
     public function __construct(
         Context $context,
-        UrlInterface $urlInterface,
         FormKey $formKey,
         ProductRepository $productRepository,
         Cart $cart,
-        ManagerInterface $messageManager,
-        Product $product
+        ManagerInterface $messageManager
     ) {
-        $this->_urlInterface = $urlInterface;
         $this->formKey = $formKey;
         $this->productRepository = $productRepository;
         $this->cart = $cart;
-        $this->_messageManager = $messageManager;
-        $this->product = $product;
+        $this->messageManager = $messageManager;
         parent::__construct($context);
     }
 
     /**
+     * Ajax Add to Cart
+     *
      * @return ResponseInterface|ResultInterface|void
      * @throws LocalizedException
      */
@@ -98,17 +88,17 @@ class AddToCart extends Action
         $params = [
             'form_key' => $this->formKey->getFormKey(),
             'product' => $productId, //product Id
-            'qty' => 1 //quantity of product
+            'qty' =>  self::PRODUCT_QTY //quantity of product
         ];
-        $_product = $this->productRepository->getById($productId);
-        $url = $this->_urlInterface->getUrl('checkout/cart', ['_secure' => true]);
+        $product = $this->productRepository->getById($productId);
+        /* @var ProductRepository $product */
         try {
-            $this->cart->addProduct($_product, $params);
+            $this->cart->addProduct($product, $params);
             $this->cart->save();
-            $message = __("You added %1 to your shopping cart.", $_product->getName());
-            $this->messageManager->addSuccess($message);
-        } catch (\Exception $e) {
-            $message = __("We don't have as many %1 as you requested.", $_product->getName());
+            $message = __("You added %1 to your shopping cart.", $product->getName());
+            $this->messageManager->addSuccessMessage($message);
+        } catch (Exception $e) {
+            $message = __("We don't have as many %1 as you requested.", $product->getName());
             $this->messageManager->addErrorMessage($message);
         }
     }

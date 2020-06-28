@@ -16,6 +16,7 @@ use Cgi\RecommendedProducts\Api\Data\RecommendedSearchResultsInterfaceFactory;
 use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Model\ResourceModel\Recommended as ResourceRecommended;
 use Cgi\RecommendedProducts\Model\ResourceModel\Recommended\CollectionFactory as RecommendedCollectionFactory;
+use Exception;
 use Magento\Framework\Api\ExtensibleDataObjectConverter;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
@@ -66,7 +67,7 @@ class RecommendedRepository implements RecommendedRepositoryInterface
      * @param ResourceRecommended                      $resource                      Resource Recommended
      * @param RecommendedFactory                       $recommendedFactory            Recommended Factory
      * @param RecommendedCollectionFactory             $recommendedCollectionFactory  Recommended Collection Factory
-     * @param RecommendedSearchResultsInterfaceFactory $searchResultsFactory          Recommended Search Results InterfaceFactory
+     * @param RecommendedSearchResultsInterfaceFactory $searchResultsFactory          Search Results InterfaceFactory
      * @param CollectionProcessorInterface             $collectionProcessor           Collection Processor Interface
      * @param ExtensibleDataObjectConverter            $extensibleDataObjectConverter Extensible DataObject Converter
      */
@@ -101,7 +102,7 @@ class RecommendedRepository implements RecommendedRepositoryInterface
             $recommendedModel = $this->recommendedFactory->create();
             $recommendedModel->setData($recommendedData);
             $recommendedModel->save();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new CouldNotSaveException(
                 __(
                     'Could not save the recommended: %1',
@@ -157,7 +158,7 @@ class RecommendedRepository implements RecommendedRepositoryInterface
             $recommendedModel = $this->recommendedFactory->create();
             $this->resource->load($recommendedModel, $recommended->getEntityId());
             $this->resource->delete($recommendedModel);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new CouldNotDeleteException(
                 __(
                     'Could not delete the Recommended: %1',

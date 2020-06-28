@@ -11,9 +11,9 @@
 namespace Cgi\RecommendedProducts\Cron;
 
 use Cgi\RecommendedProducts\Api\Data\RecommendedInterface;
-use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Model\ResourceModel\Recommended\CollectionFactory;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
+use Exception;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class DeleteRecommendedProducts
@@ -22,11 +22,6 @@ class DeleteRecommendedProducts
      * @var RecommendedProductLogger
      */
     protected $productLogger;
-
-    /**
-     * @var RecommendedRepositoryInterface
-     */
-    protected $recommendedRepository;
 
     /**
      * @var DateTime
@@ -41,24 +36,23 @@ class DeleteRecommendedProducts
     /**
      * DeleteRecommendedProducts constructor.
      *
-     * @param RecommendedProductLogger       $productLogger
-     * @param RecommendedRepositoryInterface $recommendedRepository
-     * @param CollectionFactory              $collectionFactory
-     * @param DateTime                       $dateTime
+     * @param RecommendedProductLogger       $productLogger Logger
+     * @param CollectionFactory              $collectionFactory Slider Collection
+     * @param DateTime                       $dateTime  Date
      */
     public function __construct(
         RecommendedProductLogger $productLogger,
-        RecommendedRepositoryInterface $recommendedRepository,
         CollectionFactory $collectionFactory,
         DateTime $dateTime
     ) {
         $this->productLogger = $productLogger;
-        $this->recommendedRepository = $recommendedRepository;
         $this->collectionFactory = $collectionFactory;
         $this->dateTime = $dateTime;
     }
 
     /**
+     * Delete Expired Products
+     *
      * @return $this
      */
     public function execute()
@@ -74,7 +68,7 @@ class DeleteRecommendedProducts
                 $message = __("Expired Products Deleted Successfully.");
                 $this->productLogger->info($message);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->productLogger->critical($e->getMessage());
         }
         return $this;

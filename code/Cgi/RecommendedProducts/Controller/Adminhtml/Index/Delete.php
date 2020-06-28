@@ -15,9 +15,7 @@ use Cgi\RecommendedProducts\Api\RecommendedRepositoryInterface;
 use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 
@@ -29,44 +27,41 @@ use Magento\Framework\Exception\LocalizedException;
 class Delete extends Action
 {
     /**
-     * @var RedirectInterface
-     */
-    protected $redirect;
-
-    /**
      * @var RecommendedRepositoryInterface
      */
-    protected $recommendedRepositoryInterface;
+    protected $recommendedRepo;
 
     /**
      * @var RecommendedProductLogger
      */
-    protected $recommendedProductLogger;
+    protected $recommendedLog;
+
+    /**
+     * @var Context
+     */
+    private $context;
 
     /**
      * Delete constructor.
      *
-     * @param Context                        $context
-     * @param ResultFactory                  $resultFactory
-     * @param RecommendedRepositoryInterface $recommendedRepositoryInterface
-     * @param RecommendedProductLogger       $recommendedProductLogger
-     * @param RedirectInterface              $redirect
+     * @param Context                        $context   Context for parent
+     * @param RecommendedRepositoryInterface $recommendedRepo   RecommendedRepositoryInterface
+     * @param RecommendedProductLogger       $recommendedLog    RecommendedProductLogger
      */
     public function __construct(
         Context $context,
-        ResultFactory $resultFactory,
-        RecommendedRepositoryInterface $recommendedRepositoryInterface,
-        RecommendedProductLogger $recommendedProductLogger,
-        RedirectInterface $redirect
+        RecommendedRepositoryInterface $recommendedRepo,
+        RecommendedProductLogger $recommendedLog
     ) {
-        $this->redirect = $redirect;
-        $this->recommendedRepositoryInterface = $recommendedRepositoryInterface;
-        $this->recommendedProductLogger = $recommendedProductLogger;
-        $this->resultFactory = $resultFactory;
+        $this->recommendedRepo = $recommendedRepo;
+        $this->recommendedLog = $recommendedLog;
         parent::__construct($context);
+        $this->context = $context;
     }
 
     /**
+     * Delete Slider Product
+     *
      * @return $this|ResponseInterface|ResultInterface
      */
     public function execute()
@@ -77,9 +72,9 @@ class Delete extends Action
         */
         if (isset($customerId)) {
             try {
-                $this->recommendedRepositoryInterface->deleteById($customerId);
+                $this->recommendedRepo->deleteById($customerId);
             } catch (LocalizedException $e) {
-                $this->recommendedProductLogger->critical($e->getMessage());
+                $this->recommendedLog->critical($e->getMessage());
             }
         }
         return $this;

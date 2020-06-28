@@ -19,7 +19,6 @@ use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Checkout\Model\Cart;
 use Magento\Customer\Model\Session;
-use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\Exception\LocalizedException;
@@ -68,16 +67,15 @@ class Slider extends ListProduct implements BlockInterface
     /**
      * Slider constructor.
      *
-     * @param Session $customerSession
-     * @param CollectionFactory $collectionFactory
-     * @param Context $context
-     * @param PostHelper $postDataHelper
-     * @param Resolver $layerResolver
-     * @param FormKey $formKey
-     * @param Cart $cart
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param Data $urlHelper
-     * @param array $data
+     * @param Session $customerSession Customer Session
+     * @param CollectionFactory $collectionFactory  Product Collection
+     * @param Context $context  Context for parent
+     * @param PostHelper $postDataHelper Helper Data
+     * @param Resolver $layerResolver Resolver
+     * @param FormKey $formKey Form Key
+     * @param Cart $cart Cart Items
+     * @param CategoryRepositoryInterface $categoryRepository Category Repository
+     * @param Data $urlHelper Url Helper
      */
     public function __construct(
         Session $customerSession,
@@ -88,8 +86,7 @@ class Slider extends ListProduct implements BlockInterface
         FormKey $formKey,
         Cart $cart,
         CategoryRepositoryInterface $categoryRepository,
-        Data $urlHelper,
-        array $data = []
+        Data $urlHelper
     ) {
         $this->customerSession = $customerSession;
         $this->formKey = $formKey;
@@ -105,6 +102,8 @@ class Slider extends ListProduct implements BlockInterface
     }
 
     /**
+     * Slider Product Collection
+     *
      * @return array
      */
     public function getProductCollection()
@@ -129,7 +128,7 @@ class Slider extends ListProduct implements BlockInterface
                 $joinConditions,
                 []
             )->where('u.customer_id = ?', $customerId)
-                ->order(RecommendedInterface::PRIORITY, SortOrder::SORT_ASC)
+                ->order(RecommendedInterface::PRIORITY)
                 ->order('u.product_updated_at desc')
                 ->limit(self::PRODUCT_COUNT);
         }
@@ -140,6 +139,8 @@ class Slider extends ListProduct implements BlockInterface
     }
 
     /**
+     * Customer Session
+     *
      * @return Session
      */
     public function getCustomerLoggedIn()
@@ -148,6 +149,8 @@ class Slider extends ListProduct implements BlockInterface
     }
 
     /**
+     * Store BaseUrl
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -157,6 +160,8 @@ class Slider extends ListProduct implements BlockInterface
     }
 
     /**
+     * Form Key
+     *
      * @return string
      * @throws LocalizedException
      */

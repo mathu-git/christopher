@@ -10,24 +10,27 @@
 
 namespace Cgi\RecommendedProducts\Block\Adminhtml\Grid\Renderer;
 
+use Magento\Backend\Block\Widget\Grid\Column\Renderer\Action;
 use Magento\Framework\DataObject as DataObjectAlias;
 
 /**
- * Class Multiaction
+ * Class Multi action
  *
  * @package Cgi\RecommendedProducts\Block\Adminhtml\Grid\Renderer
  */
-class Multiaction extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Action
+class Multiaction extends Action
 {
     /**
      * Render single action as link html
      *
-     * @param  array           $action
-     * @param  DataObjectAlias $row
+     * @param  array           $action  Action
+     * @param  DataObjectAlias $row Data Object
      * @return string|false
      */
-    protected function _toLinkHtml($action, DataObjectAlias $row)
-    {
+    protected function _toLinkHtml(
+        $action,
+        DataObjectAlias $row
+    ) {
         $style = '';
         $onClick = sprintf('onclick="return %s.configureItem(%s)"', 'wishlistControl', $row->getId());
         return sprintf('<a href="%s" %s %s>%s</a>', $action['url'], $style, $onClick, $action['caption']);

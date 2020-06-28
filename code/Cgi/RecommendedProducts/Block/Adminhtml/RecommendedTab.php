@@ -32,30 +32,32 @@ class RecommendedTab extends TabWrapper implements TabInterface
     /**
      * @var Http
      */
-    protected $_request;
+    protected $request;
 
     /**
      * Constructor
      *
-     * @param Context $context
-     * @param Http    $_request
-     * @param array   $data
+     * @param Context $context Context for parent
+     * @param Http    $request Param Request
+     * @param array   $data Data Array
      */
     public function __construct(
         Context $context,
-        Http $_request,
+        Http $request,
         array $data = []
     ) {
-        $this->_request = $_request;
+        $this->request = $request;
         parent::__construct($context, $data);
     }
 
     /**
+     * Show Tab in Admin
+     *
      * @return bool|mixed|null
      */
     public function canShowTab()
     {
-        return $this->_request->getParam(RecommendedInterface::ID);
+        return $this->request->getParam(RecommendedInterface::ID);
     }
 
     /**
