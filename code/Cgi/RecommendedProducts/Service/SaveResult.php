@@ -48,7 +48,7 @@ class SaveResult
 
     /**
      * Save New Product for Slider
-     * 
+     *
      * @param  int    $priority   Priority
      * @param  int    $productId  ProductId
      * @param  string $name       Product Name
