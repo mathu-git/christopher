@@ -23,8 +23,8 @@ class Multiaction extends Action
     /**
      * Render single action as link html
      *
-     * @param  array           $action  Action
-     * @param  DataObjectAlias $row Data Object
+     * @param  array           $action Action
+     * @param  DataObjectAlias $row    Data Object
      * @return string|false
      */
     protected function _toLinkHtml(

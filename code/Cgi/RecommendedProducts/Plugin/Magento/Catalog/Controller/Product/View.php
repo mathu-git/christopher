@@ -39,41 +39,57 @@ class View
     public const PRIORITY = '3';
 
     /**
+     * RecommendedRepositoryInterface
+     *
      * @var RecommendedRepositoryInterface
      */
     protected $recommendedRepo;
 
     /**
+     * DateTime
+     *
      * @var DateTime
      */
     protected $date;
 
     /**
+     * CustomerSession
+     *
      * @var CustomerSession
      */
     protected $customerSession;
 
     /**
+     * Viewed
+     *
      * @var Viewed
      */
     protected $recentlyViewed;
 
     /**
+     * ProductRepository
+     *
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
+     * SearchCriteriaBuilder
+     *
      * @var SearchCriteriaBuilder
      */
     protected $searchCriteria;
 
     /**
+     * Service
+     *
      * @var SaveResult
      */
     protected $saveResult;
 
     /**
+     * Logger
+     *
      * @var RecommendedProductLogger
      */
     protected $logger;
@@ -81,14 +97,14 @@ class View
     /**
      * SaveRecommendedInfo constructor.
      *
-     * @param RecommendedRepositoryInterface $recommendedRepo Recommended Repository Interface
-     * @param Session                        $customerSession
-     * @param SearchCriteriaBuilder          $searchCriteria
-     * @param ProductRepository              $productRepository
-     * @param SaveResult                     $saveResult
-     * @param RecommendedProductLogger       $logger
-     * @param Viewed                         $recentlyViewed
-     * @param DateTime                       $date                           DateTime
+     * @param RecommendedRepositoryInterface $recommendedRepo   Recommended Repository Interface
+     * @param Session                        $customerSession   CustomerSession
+     * @param SearchCriteriaBuilder          $searchCriteria    SearchCriteriaBuilder
+     * @param ProductRepository              $productRepository ProductRepository
+     * @param SaveResult                     $saveResult        Service
+     * @param RecommendedProductLogger       $logger            Logger
+     * @param Viewed                         $recentlyViewed    Viewed
+     * @param DateTime                       $date              DateTime
      */
     public function __construct(
         RecommendedRepositoryInterface $recommendedRepo,
@@ -113,24 +129,19 @@ class View
     /**
      * Before Plugin for Viewing the product
      *
-     * @param \Magento\Catalog\Controller\Product\View $subject
+     * @param  \Magento\Catalog\Controller\Product\View $subject ProductView
      * @return View
      */
     public function beforeExecute(
         \Magento\Catalog\Controller\Product\View $subject
     ) {
         /**
-         * check the customer is logged in
+         * Check the customer is logged in
          */
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/templog.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
         if ($this->customerSession->isLoggedIn()) {
-            $logger->info(print_r('1', true));
             $customerId = $this->customerSession->getCustomerId();
             $date = $this->date->gmtDate();
             try {
-                $logger->info(print_r('2', true));
                 $productId = (int)$subject->getRequest()->getParam(RecommendedInterface::ID);
                 $productRepository = $this->productRepository->getById($productId);
                 $productName = $productRepository->getName();
@@ -141,10 +152,9 @@ class View
                     ->create();
                 $viewProductList = $this->recommendedRepo->getList($searchCriteria);
                 /**
-                 * check the product exist in custom table
+                 * Check the product exist in custom table
                  */
                 if ($viewProductList->getTotalCount()) {
-                    $logger->info(print_r('3', true));
                     /**
                      * Viewed Product Items
                      */

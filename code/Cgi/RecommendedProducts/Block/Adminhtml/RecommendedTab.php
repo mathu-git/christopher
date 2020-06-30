@@ -25,11 +25,15 @@ use Magento\Ui\Component\Layout\Tabs\TabWrapper;
 class RecommendedTab extends TabWrapper implements TabInterface
 {
     /**
+     * AjaxLoader
+     *
      * @var bool
      */
     protected $isAjaxLoaded = true;
 
     /**
+     * Param Request
+     *
      * @var Http
      */
     protected $request;
@@ -39,7 +43,7 @@ class RecommendedTab extends TabWrapper implements TabInterface
      *
      * @param Context $context Context for parent
      * @param Http    $request Param Request
-     * @param array   $data Data Array
+     * @param array   $data    Data Array
      */
     public function __construct(
         Context $context,

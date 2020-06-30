@@ -21,12 +21,14 @@ class RecommendedProductHandler extends Base
 {
     /**
      * Logging level
+     *
      * @var int
      */
     protected $loggerType = Logger::INFO;
 
     /**
      * File name
+     *
      * @var string
      */
     protected $fileName = '/var/log/recommended_product.log';

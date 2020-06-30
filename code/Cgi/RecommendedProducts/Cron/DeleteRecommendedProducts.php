@@ -16,19 +16,29 @@ use Cgi\RecommendedProducts\Service\Logger\RecommendedProductLogger;
 use Exception;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
+/**
+ * Class DeleteRecommendedProducts
+ * @package Cgi\RecommendedProducts\Cron
+ */
 class DeleteRecommendedProducts
 {
     /**
+     * Logger
+     *
      * @var RecommendedProductLogger
      */
     protected $productLogger;
 
     /**
+     * Date
+     *
      * @var DateTime
      */
     protected $dateTime;
 
     /**
+     * SliderCollection
+     *
      * @var CollectionFactory
      */
     protected $collectionFactory;
@@ -36,9 +46,9 @@ class DeleteRecommendedProducts
     /**
      * DeleteRecommendedProducts constructor.
      *
-     * @param RecommendedProductLogger       $productLogger Logger
-     * @param CollectionFactory              $collectionFactory Slider Collection
-     * @param DateTime                       $dateTime  Date
+     * @param RecommendedProductLogger $productLogger     Logger
+     * @param CollectionFactory        $collectionFactory SliderCollection
+     * @param DateTime                 $dateTime          Date
      */
     public function __construct(
         RecommendedProductLogger $productLogger,

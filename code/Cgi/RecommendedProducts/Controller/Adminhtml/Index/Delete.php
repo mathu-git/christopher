@@ -27,16 +27,22 @@ use Magento\Framework\Exception\LocalizedException;
 class Delete extends Action
 {
     /**
+     * RecommendedRepositoryInterface
+     *
      * @var RecommendedRepositoryInterface
      */
     protected $recommendedRepo;
 
     /**
+     * RecommendedProductLogger
+     *
      * @var RecommendedProductLogger
      */
     protected $recommendedLog;
 
     /**
+     * Context for parent
+     *
      * @var Context
      */
     private $context;
@@ -44,9 +50,9 @@ class Delete extends Action
     /**
      * Delete constructor.
      *
-     * @param Context                        $context   Context for parent
-     * @param RecommendedRepositoryInterface $recommendedRepo   RecommendedRepositoryInterface
-     * @param RecommendedProductLogger       $recommendedLog    RecommendedProductLogger
+     * @param Context                        $context         Context for parent
+     * @param RecommendedRepositoryInterface $recommendedRepo RecommendedRepositoryInterface
+     * @param RecommendedProductLogger       $recommendedLog  RecommendedProductLogger
      */
     public function __construct(
         Context $context,
