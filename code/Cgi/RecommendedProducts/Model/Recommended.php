@@ -26,11 +26,15 @@ use Magento\Framework\Registry;
 class Recommended extends AbstractModel
 {
     /**
+     * Recommended Factory
+     *
      * @var RecommendedInterfaceFactory
      */
     protected $recommendedFactory;
 
     /**
+     * Data Object Helper
+     *
      * @var DataObjectHelper
      */
     protected $dataObjectHelper;
@@ -38,13 +42,13 @@ class Recommended extends AbstractModel
     /**
      * Recommended Constructor
      *
-     * @param Context                     $context                Context for parent
-     * @param Registry                    $registry               Registry
+     * @param Context                     $context            Context for parent
+     * @param Registry                    $registry           Registry
      * @param RecommendedInterfaceFactory $recommendedFactory Recommended Factory
-     * @param DataObjectHelper            $dataObjectHelper       Data Object Helper
-     * @param ResourceModel\Recommended   $resource               Resource Model
-     * @param Collection                  $resourceCollection     Collection
-     * @param array                       $data                   data array
+     * @param DataObjectHelper            $dataObjectHelper   Data Object Helper
+     * @param ResourceModel\Recommended   $resource           Resource Model
+     * @param Collection                  $resourceCollection Collection
+     * @param array                       $data               data array
      */
     public function __construct(
         Context $context,

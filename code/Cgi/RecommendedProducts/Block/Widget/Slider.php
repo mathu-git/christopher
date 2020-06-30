@@ -45,21 +45,29 @@ class Slider extends ListProduct implements BlockInterface
     public const PRODUCT_COUNT = 15;
 
     /**
+     * CustomerSession
+     *
      * @var Session
      */
     protected $customerSession;
 
     /**
+     * ProductCollection
+     *
      * @var CollectionFactory
      */
     protected $collectionFactory;
 
     /**
+     * FormKey
+     *
      * @var FormKey
      */
     protected $formKey;
 
     /**
+     * CartItems
+     *
      * @var Cart
      */
     protected $cart;
@@ -67,15 +75,15 @@ class Slider extends ListProduct implements BlockInterface
     /**
      * Slider constructor.
      *
-     * @param Session $customerSession Customer Session
-     * @param CollectionFactory $collectionFactory  Product Collection
-     * @param Context $context  Context for parent
-     * @param PostHelper $postDataHelper Helper Data
-     * @param Resolver $layerResolver Resolver
-     * @param FormKey $formKey Form Key
-     * @param Cart $cart Cart Items
-     * @param CategoryRepositoryInterface $categoryRepository Category Repository
-     * @param Data $urlHelper Url Helper
+     * @param Session                       $customerSession    CustomerSession
+     * @param CollectionFactory             $collectionFactory  ProductCollection
+     * @param Context                       $context            Context for parent
+     * @param PostHelper                    $postDataHelper     HelperData
+     * @param Resolver                      $layerResolver      Resolver
+     * @param FormKey                       $formKey            FormKey
+     * @param Cart                          $cart               CartItems
+     * @param CategoryRepositoryInterface   $categoryRepository CategoryRepository
+     * @param Data                          $urlHelper          UrlHelper
      */
     public function __construct(
         Session $customerSession,

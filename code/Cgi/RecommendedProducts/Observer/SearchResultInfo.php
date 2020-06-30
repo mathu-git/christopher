@@ -48,51 +48,71 @@ class SearchResultInfo implements ObserverInterface
     public const NAME = 'name';
 
     /**
+     * RecommendedRepositoryInterface
+     *
      * @var RecommendedRepositoryInterface
      */
     protected $recommendedRepo;
 
     /**
+     * Date
+     *
      * @var DateTime
      */
     protected $date;
 
     /**
+     * Recently Viewed Product
+     *
      * @var Viewed
      */
     protected $recentlyViewed;
 
     /**
+     * ProductRepository
+     *
      * @var ProductRepository
      */
     protected $productRepository;
 
     /**
+     * SearchCriteriaBuilder
+     *
      * @var SearchCriteriaBuilder
      */
     protected $searchCriteria;
 
     /**
+     * Query
+     *
      * @var QueryFactory
      */
     protected $queryFactory;
 
     /**
+     * CustomerSessionFactory
+     *
      * @var CustomerSessionFactory
      */
     protected $customerSession;
 
     /**
+     * Service
+     *
      * @var SaveResult
      */
     protected $saveResult;
 
     /**
+     * Logger
+     *
      * @var RecommendedProductLogger
      */
     protected $logger;
 
     /**
+     * FilterBuilder
+     *
      * @var FilterBuilder
      */
     protected $filterBuilder;
@@ -100,16 +120,16 @@ class SearchResultInfo implements ObserverInterface
     /**
      * SaveRecommendedInfo constructor.
      *
-     * @param RecommendedRepositoryInterface $recommendedRepo Recommended Repository Interface
-     * @param SessionFactory $sessionFactory CustomerSessionFactory
-     * @param FilterBuilder $filterBuilder FilterBuilder
-     * @param RecommendedProductLogger $logger Logger
-     * @param SearchCriteriaBuilder $searchCriteria SearchCriteriaBuilder
-     * @param ProductRepository $productRepository ProductRepository
-     * @param Viewed $recentlyViewed Recently Viewed Product
-     * @param SaveResult $saveResult Service
-     * @param QueryFactory $queryFactory Query
-     * @param DateTime $date DateTime
+     * @param RecommendedRepositoryInterface $recommendedRepo   Recommended Repository Interface
+     * @param SessionFactory                 $sessionFactory    CustomerSessionFactory
+     * @param FilterBuilder                  $filterBuilder     FilterBuilder
+     * @param RecommendedProductLogger       $logger            Logger
+     * @param SearchCriteriaBuilder          $searchCriteria    SearchCriteriaBuilder
+     * @param ProductRepository              $productRepository ProductRepository
+     * @param Viewed                         $recentlyViewed    Recently Viewed Product
+     * @param SaveResult                     $saveResult        Service
+     * @param QueryFactory                   $queryFactory      Query
+     * @param DateTime                       $date              DateTime
      */
     public function __construct(
         RecommendedRepositoryInterface $recommendedRepo,
@@ -144,7 +164,7 @@ class SearchResultInfo implements ObserverInterface
     public function execute(Observer $observer)
     {
         /**
-         * check the customer is logged in
+         * Check the customer is logged in
          */
         $customer = $this->customerSession->create();
         if ($customer->isLoggedIn()) {
@@ -155,7 +175,7 @@ class SearchResultInfo implements ObserverInterface
             $customerId = $customer->getCustomerId();
             $date = $this->date->gmtDate();
             /**
-             * check the product exist in magento
+             * Check the product exist in magento
              */
             if ($product->getTotalCount()) {
                 try {
@@ -178,7 +198,7 @@ class SearchResultInfo implements ObserverInterface
                         ->create();
                     $productExist = $this->recommendedRepo->getList($searchCriteria);
                     /**
-                     * check the product exist in custom table and save the product
+                     * Check the product exist in custom table and save the product
                      */
                     if ($productExist->getTotalCount()) {
                         $this->saveResult->saveProducts(

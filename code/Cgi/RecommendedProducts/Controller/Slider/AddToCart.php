@@ -34,21 +34,29 @@ class AddToCart extends Action
     public const PRODUCT_QTY = 1;
 
     /**
+     * FormKey
+     *
      * @var FormKey
      */
     protected $formKey;
 
     /**
+     * Cart Items
+     *
      * @var Cart
      */
     protected $cart;
 
     /**
+     * MessageManager
+     *
      * @var ManagerInterface
      */
     protected $messageManager;
 
     /**
+     * ProductRepository
+     *
      * @var ProductRepository
      */
     protected $productRepository;
@@ -56,11 +64,11 @@ class AddToCart extends Action
     /**
      * AddToCart constructor.
      *
-     * @param Context $context Context for parent
-     * @param FormKey $formKey Form Key
-     * @param ProductRepository $productRepository Product Repository
-     * @param Cart $cart Cart Items
-     * @param ManagerInterface $messageManager Message Manager
+     * @param Context           $context           Context for parent
+     * @param FormKey           $formKey           FormKey
+     * @param ProductRepository $productRepository ProductRepository
+     * @param Cart              $cart              CartItems
+     * @param ManagerInterface  $messageManager    MessageManager
      */
     public function __construct(
         Context $context,

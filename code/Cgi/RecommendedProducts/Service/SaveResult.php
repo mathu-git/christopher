@@ -23,11 +23,15 @@ use Magento\Framework\Exception\LocalizedException as LocalizedExceptionAlias;
 class SaveResult
 {
     /**
+     * RecommendedInterfaceFactory
+     *
      * @var RecommendedInterfaceFactory
      */
     protected $recommendedFact;
 
     /**
+     * RecommendedRepositoryInterface
+     *
      * @var RecommendedRepositoryInterface
      */
     protected $recommendedRepo;
@@ -35,8 +39,8 @@ class SaveResult
     /**
      * SaveResult constructor.
      *
-     * @param RecommendedInterfaceFactory    $recommendedFact   RecommendedInterfaceFactory
-     * @param RecommendedRepositoryInterface $recommendedRepo   RecommendedRepositoryInterface
+     * @param RecommendedInterfaceFactory    $recommendedFact RecommendedInterfaceFactory
+     * @param RecommendedRepositoryInterface $recommendedRepo RecommendedRepositoryInterface
      */
     public function __construct(
         RecommendedInterfaceFactory $recommendedFact,
@@ -89,7 +93,7 @@ class SaveResult
             $recommended = $this->recommendedRepo
                 ->getById($productExistItem->getId());
             /**
-             * check the priority and the customer is same or not
+             * Check the priority and the customer is same or not
              */
             if (($productExistItem->getPriority() > $priority)
                 && ($productExistItem->getCustomerId() == $cId)

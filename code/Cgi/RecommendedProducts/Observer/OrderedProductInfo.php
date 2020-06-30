@@ -42,41 +42,57 @@ class OrderedProductInfo implements ObserverInterface
     public const PRIORITY = '1';
 
     /**
+     * Recommended Repository Interface
+     *
      * @var RecommendedRepositoryInterface
      */
     protected $recommendedRepo;
 
     /**
+     * Date
+     *
      * @var DateTime
      */
     protected $date;
 
     /**
+     * CustomerSession
+     *
      * @var Session
      */
     protected $customerSession;
 
     /**
+     * SearchCriteriaBuilder
+     *
      * @var SearchCriteriaBuilder
      */
     protected $searchCriteria;
 
     /**
+     * Service
+     *
      * @var SaveResult
      */
     protected $saveResult;
 
     /**
+     * Logger
+     *
      * @var RecommendedProductLogger
      */
     protected $recommendedLogger;
 
     /**
+     * FilterBuilder
+     *
      * @var FilterBuilder
      */
     protected $filterBuilder;
 
     /**
+     * ProductRepository
+     *
      * @var ProductRepository
      */
     protected $productRepository;
@@ -84,14 +100,14 @@ class OrderedProductInfo implements ObserverInterface
     /**
      * SaveRecommendedInfo constructor.
      *
-     * @param RecommendedRepositoryInterface $recommendedRepo    Recommended Repository Interface
+     * @param RecommendedRepositoryInterface $recommendedRepo   Recommended Repository Interface
      * @param Session                        $customerSession   CustomerSession
-     * @param SaveResult                     $saveResult    Service
+     * @param SaveResult                     $saveResult        Service
      * @param ProductRepository              $productRepository ProductRepository
-     * @param FilterBuilder                  $filterBuilder FilterBuilder
-     * @param RecommendedProductLogger       $recommendedLogger  Logger
-     * @param SearchCriteriaBuilder          $searchCriteria SearchCriteriaBuilder
-     * @param DateTime                       $date  DateTime
+     * @param FilterBuilder                  $filterBuilder     FilterBuilder
+     * @param RecommendedProductLogger       $recommendedLogger Logger
+     * @param SearchCriteriaBuilder          $searchCriteria    SearchCriteriaBuilder
+     * @param DateTime                       $date              DateTime
      */
     public function __construct(
         RecommendedRepositoryInterface $recommendedRepo,
@@ -116,13 +132,13 @@ class OrderedProductInfo implements ObserverInterface
     /**
      * Execute Observer When Order Place
      *
-     * @param  Observer $observer
+     * @param  Observer $observer Observer
      * @return $this|void
      */
     public function execute(Observer $observer)
     {
         /**
-         * check the customer is logged in
+         * Check the customer is logged in
          */
         if ($this->customerSession->isLoggedIn()) {
             $order = $observer->getEvent()->getOrder();
@@ -155,7 +171,7 @@ class OrderedProductInfo implements ObserverInterface
                 $orderProductList = $this->recommendedRepo->getList($searchCriteria);
                 $existedProductId = [];
                 /**
-                 * check the product exist in custom table and save the product
+                 * Check the product exist in custom table and save the product
                  */
                 if ($orderProductList->getTotalCount()) {
                     foreach ($orderProductList->getItems() as $existedItem) {
@@ -171,7 +187,7 @@ class OrderedProductInfo implements ObserverInterface
                 }
 
                 /**
-                 * compare and get the not existed product id
+                 * Compare and get the not existed product id
                  */
                 $newProduct = array_diff($orderProductId, $existedProductId);
                 /**

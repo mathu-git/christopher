@@ -22,6 +22,7 @@ use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -32,44 +33,56 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class RecommendedRepository implements RecommendedRepositoryInterface
 {
     /**
+     * Search Results InterfaceFactory
+     *
      * @var RecommendedSearchResultsInterfaceFactory
      */
     protected $searchResultsFactory;
 
     /**
+     * Collection Processor Interface
+     *
      * @var CollectionProcessorInterface
      */
     protected $collectionProcessor;
 
     /**
+     * Resource Recommended
+     *
      * @var ResourceRecommended
      */
     protected $resource;
 
     /**
+     * Recommended Collection Factory
+     *
      * @var RecommendedCollectionFactory
      */
     protected $recommendedCollectionFactory;
 
     /**
+     * Recommended Factory
+     *
      * @var RecommendedFactory
      */
     protected $recommendedFactory;
 
     /**
+     * Extensible DataObject Converter
+     *
      * @var ExtensibleDataObjectConverter
      */
-    protected $extensibleDataObjectConverter;
+    protected $extensibleDataObj;
 
     /**
      * RecommendedProductsRepository constructor.
      *
-     * @param ResourceRecommended                      $resource                      Resource Recommended
-     * @param RecommendedFactory                       $recommendedFactory            Recommended Factory
-     * @param RecommendedCollectionFactory             $recommendedCollectionFactory  Recommended Collection Factory
-     * @param RecommendedSearchResultsInterfaceFactory $searchResultsFactory          Search Results InterfaceFactory
-     * @param CollectionProcessorInterface             $collectionProcessor           Collection Processor Interface
-     * @param ExtensibleDataObjectConverter            $extensibleDataObjectConverter Extensible DataObject Converter
+     * @param ResourceRecommended                      $resource                     Resource Recommended
+     * @param RecommendedFactory                       $recommendedFactory           Recommended Factory
+     * @param RecommendedCollectionFactory             $recommendedCollectionFactory Recommended Collection Factory
+     * @param RecommendedSearchResultsInterfaceFactory $searchResultsFactory         Search Results InterfaceFactory
+     * @param CollectionProcessorInterface             $collectionProcessor          Collection Processor Interface
+     * @param ExtensibleDataObjectConverter            $extensibleDataObj            Extensible DataObject Converter
      */
     public function __construct(
         ResourceRecommended $resource,
@@ -77,22 +90,26 @@ class RecommendedRepository implements RecommendedRepositoryInterface
         RecommendedCollectionFactory $recommendedCollectionFactory,
         RecommendedSearchResultsInterfaceFactory $searchResultsFactory,
         CollectionProcessorInterface $collectionProcessor,
-        ExtensibleDataObjectConverter $extensibleDataObjectConverter
+        ExtensibleDataObjectConverter $extensibleDataObj
     ) {
         $this->resource = $resource;
         $this->recommendedFactory = $recommendedFactory;
         $this->recommendedCollectionFactory = $recommendedCollectionFactory;
         $this->searchResultsFactory = $searchResultsFactory;
         $this->collectionProcessor = $collectionProcessor;
-        $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
+        $this->extensibleDataObj = $extensibleDataObj;
     }
 
     /**
+     * Save Data
+     *
+     * @param RecommendedInterface $recommended
+     * @return RecommendedInterface
      * {@inheritdoc}
      */
     public function save(RecommendedInterface $recommended)
     {
-        $recommendedData = $this->extensibleDataObjectConverter->toNestedArray(
+        $recommendedData = $this->extensibleDataObj->toNestedArray(
             $recommended,
             [],
             RecommendedInterface::class
@@ -110,20 +127,18 @@ class RecommendedRepository implements RecommendedRepositoryInterface
                 )
             );
         }
-        /**
-         * @var Recommended $recommendedModel
-         */
         return $recommendedModel->getDataModel();
     }
 
     /**
+     * Get by Id
+     *
+     * @param string $entityId
+     * @return RecommendedInterface
      * {@inheritdoc}
      */
     public function getById($entityId)
     {
-        /**
-         * @var Recommended $recommended
-         */
         $recommended = $this->recommendedFactory->create();
         $this->resource->load($recommended, $entityId);
         if (!$recommended->getId()) {
@@ -133,6 +148,10 @@ class RecommendedRepository implements RecommendedRepositoryInterface
     }
 
     /**
+     * Get List of Items
+     *
+     * @param SearchCriteriaInterface $criteria
+     * @return RecommendedSearchResultsInterface
      * {@inheritdoc}
      */
     public function getList(SearchCriteriaInterface $criteria)
@@ -140,9 +159,6 @@ class RecommendedRepository implements RecommendedRepositoryInterface
         $collection = $this->recommendedCollectionFactory->create();
         $this->collectionProcessor->process($criteria, $collection);
         $searchResults = $this->searchResultsFactory->create();
-        /**
-         * @var RecommendedSearchResultsInterface $searchResults
-         */
         $searchResults->setSearchCriteria($criteria);
         $searchResults->setItems($collection->getItems());
         $searchResults->setTotalCount($collection->getSize());
@@ -150,6 +166,9 @@ class RecommendedRepository implements RecommendedRepositoryInterface
     }
 
     /**
+     * Delete
+     *
+     * @param RecommendedInterface $recommended
      * {@inheritdoc}
      */
     public function delete(RecommendedInterface $recommended)
@@ -170,6 +189,9 @@ class RecommendedRepository implements RecommendedRepositoryInterface
     }
 
     /**
+     * DeleteBYId
+     *
+     * @param string $entityId
      * {@inheritdoc}
      */
     public function deleteById($entityId)
